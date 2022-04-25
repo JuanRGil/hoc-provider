@@ -10,8 +10,8 @@ export function Input(props: InputProps) : any {
     }
     return (
         <label>
-            Nombre
-            <input type="text" {...props} onChange={handleChange} onBlur={handleBlur}/>
+            {props.label}
+            <input {...props} onChange={handleChange} onBlur={handleBlur}/>
         </label>
     )
 }

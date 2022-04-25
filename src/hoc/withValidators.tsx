@@ -1,54 +1,57 @@
-import React, { ChangeEvent, ComponentType, FocusEvent, useEffect, useState } from 'react';
+import React, { FocusEvent, useEffect, useState } from 'react';
 import { useFormContext } from '../providers/FormValidationProvider';
-import { InputType, ValidatorType } from '../types/common';
+import { InputProps, InputType, ValidatorType } from '../types/common';
 
 export const  withValidators = 
-(WrappedComponent: InputType, ...validators: ValidatorType[] ) => 
-//TODO: add id OR name prop to inputType. Its neccessary for Form validation
-(props: {onChange: (value: any, e: ChangeEvent<HTMLInputElement>) => void; [key: string]: any}) => 
+(WrappedComponent: InputType, validators: ValidatorType[], showMessagePolicy: 'all' | 'first' | 'none' = 'first' ) => 
+(props: InputProps) => 
 { 
-  const {isFormValid, setIsFormValid} = useFormContext();
+  const {setFieldsStates} = useFormContext();
   const [isFieldValid, setIsFieldValid] = useState(true);
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
-  useEffect(
-    ()=> console.log(`is form valid: ${isFormValid}`),
-    [isFormValid]
-  )
-  useEffect(
-    ()=> console.log(`is field valid: ${isFieldValid}`),
-    [isFieldValid]
-  )
+  const setInputState = (isInputValid: boolean) => {
+    const {name} = props;
+    setFieldsStates(prevFieldsState => ({...prevFieldsState, [name]: isInputValid}));
+  }
+
+  useEffect(()=> {
+    setInputState(false);
+  }, [])
+
   const validate = (value: any) => {
-    console.log(value)
         let isInputValid = true;
+        const newErrorMessages: string[] = []
         let i = 0;
-        while(isInputValid && i < validators.length){
-          isInputValid = validators[i].isValid(value);
-          if(!isInputValid) {
-            setErrorMessage(validators[i].message)
+
+        while((showMessagePolicy === 'all' || isInputValid) && i < validators.length){
+          if(!validators[i].isValid(value)) {
+            const newMessage = validators[i].message;
+            newErrorMessages.push(newMessage)
+            isInputValid = false;
           }
           i=i + 1;
         }
+        setErrorMessages(newErrorMessages)
         setIsFieldValid(isInputValid);
-        // TODO: add map here with inputs id|name and more complex setIsFormValid 
-        setIsFormValid(isInputValid);
+        setInputState(isInputValid);
   }
 const handleOnBlur = (value: any, e: FocusEvent<HTMLInputElement>) => {
         validate(value);
         props.onChange(value, e)
     }
 
-  function printErrorMessage(msg : string = "default error message"){
-    return msg;
+  function printErrorMessages(errorMessages : string[]) {
+    return errorMessages.map((error, index) => (<div key={index}>{error}</div>));
   }
   
   return (
     <>
       <WrappedComponent {...props} onChange={(value, e)=>props.onChange(value, e)} onBlur={(value, e)=>handleOnBlur(value, e)}/>
       {
-      !isFieldValid && (
-      <div>{printErrorMessage(errorMessage)}</div>
+      !isFieldValid &&  showMessagePolicy !== 'none' && (
+
+      <div>{printErrorMessages(errorMessages)}</div>
       )
     }
     </>
