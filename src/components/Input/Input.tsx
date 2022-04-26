@@ -3,10 +3,14 @@ import { InputProps} from "../../types/common"
 
 export function Input(props: InputProps) : any {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        props.onChange(e.target.value, e)
+        if(props.onChange) {
+            props.onChange(e, e.target.value)
+        }
     }
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-        props.onBlur(e.target.value, e)
+        if(props.onBlur) {
+            props.onBlur(e, e.target.value)
+        }
     }
     return (
         <label>

@@ -4,9 +4,15 @@ import { phoneValidator } from "../../utils/validators"
 import { Input } from "../Input/Input"
 
 function PhoneInput(props: InputProps) : any {
+
+    const handleOnBlur = (e: any) => {
+        if(props.onBlur){
+            props.onBlur(e)
+        }
+    }
     return (
-        <Input label={props.label} type="tel" name={props.name} onBlur={props.onBlur} onChange={props.onChange} />
+        <Input label={props.label} type="tel" name={props.name} onBlur={handleOnBlur} />
     )
 }
 
-export default withValidators(PhoneInput, [phoneValidator], 'all')
+export default withValidators(PhoneInput, [phoneValidator])
