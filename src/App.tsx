@@ -11,7 +11,7 @@ function App() {
   
   const ValidateWithAllMessages = withValidators(Input, [containsD, containsA, containsB, containsC], {validateOn: 'both', showMessagePolicy: 'all'})
   const ValidateWithoutMessages = withValidators(Input, [containsD, containsA, containsB, containsC], {validateOn: 'onBlur', showMessagePolicy: 'all'})
-  const ValidateWithFirstMessage = withValidators(Input, [containsD, containsA, containsB, containsC], {validateOn: 'onChange', showMessagePolicy: 'all'})
+  const ValidateWithFirstMessage = withValidators(Input, [containsD, containsA, containsB, containsC], {validateOn: 'onBlur', showMessagePolicy: 'all'})
   const handleOnChange = (e: any, value: any) => {
     console.log({value})
   }
@@ -30,9 +30,9 @@ function App() {
     <div style={style}>
 
   <FormValidationProvider contextName='form1'>
-    <ValidateWithAllMessages label="With All Errors" name="allMsgs" onBlur={handleOnBlur} onChange={handleOnChange}/>
+    <ValidateWithAllMessages label="With All Errors" name="allMsgs" required minLength={4} maxLength={4} onBlur={handleOnBlur} onChange={handleOnChange}/>
     <ValidateWithoutMessages label="With No Errors" name="noMsgs" onBlur={handleOnBlur} onChange={handleOnChange}/>
-    <ValidateWithFirstMessage label="With One Error" name="firstMsgs" onBlur={handleOnBlur} onChange={handleOnChange}/>
+    <ValidateWithFirstMessage label="With One Error" name="firstMsgs" required onBlur={handleOnBlur} onChange={handleOnChange}/>
     <PhoneInput label="Telefono" name="phoneNumber" onBlur={handleOnBlur} onChange={handleOnChange}/>
     <SubmitButton/>
   </FormValidationProvider>
