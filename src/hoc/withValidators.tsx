@@ -12,16 +12,19 @@ export const withValidators = (
   } = { validateOn: 'both', showMessagePolicy: 'first' },
 ) => (props: InputProps) => {
   const { setFieldsStates } = useFormContext();
-  const [isFieldValid, setIsFieldValid] = useState(true);
   const [intrinsicValidators, setIntrinsicValidators] = useState<ValidatorType[]>([]);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
   const setInputState = (isInputValid: boolean) => {
     const { name } = props;
-    setFieldsStates((prevFieldsState) => ({
-      ...prevFieldsState,
-      [name]: isInputValid,
-    }));
+    if(setFieldsStates){
+      setFieldsStates((prevFieldsState) => ({
+        ...prevFieldsState,
+        [name]: isInputValid,
+      }));
+    } else {
+      console.warn("FormValidationProvider not set. Please consider to include it as parent of your input fields")
+    }
   };
 
   useEffect(() => {
@@ -58,7 +61,6 @@ export const withValidators = (
       }
     }
     setErrorMessages(newErrorMessages);
-    setIsFieldValid(isInputValid);
     setInputState(isInputValid);
   };
   const handleOnBlur = (e: FocusEvent<HTMLInputElement>, value: unknown) => {
@@ -78,20 +80,13 @@ export const withValidators = (
     }
   };
 
-  function printErrorMessages(errorMessages: string[]) {
-    return errorMessages.map((error, index) => <div key={index}>{error}</div>);
-  }
-
   return (
-    <>
-      <WrappedComponent
-        {...props}
-        onChange={(value, e) => handleOnChange(value, e)}
-        onBlur={(value, e) => handleOnBlur(value, e)}
-      />
-      {!isFieldValid && options.showMessagePolicy !== 'none' && (
-        <div>{printErrorMessages(errorMessages)}</div>
-      )}
-    </>
+    <WrappedComponent
+      {...props}
+      onChange={(value, e) => handleOnChange(value, e)}
+      onBlur={(value, e) => handleOnBlur(value, e)}
+      showError={options.showMessagePolicy !== 'none'}
+      errorMessages={errorMessages}
+    />
   );
 };

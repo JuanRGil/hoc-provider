@@ -39,6 +39,13 @@ export function Input(props: InputProps): any {
         onChange={handleChange}
         onBlur={handleBlur}
       />
+      {props.showError && props.errorMessages && (
+        <ul>
+          {props.errorMessages?.map((error) => (
+            <li>{error}</li>
+          ))}
+        </ul>
+      )}
     </label>
   );
 }

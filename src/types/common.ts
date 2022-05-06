@@ -4,8 +4,10 @@ export type OnChangeFunction = (e: ChangeEvent<HTMLInputElement>, value?: any)=>
 export type OnBlurFunction = (e: FocusEvent<HTMLInputElement>, value?: any)=> void
 
 declare interface CustomInput extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange'> {
-    name: string //required
-    label: string
+    name: string; //required
+    label: string;
+    errorMessages?: string[];
+    showError?: boolean;
 }
 declare interface InputWithOnBlurRequired extends CustomInput {
     onBlur: OnBlurFunction;
