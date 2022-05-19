@@ -11,7 +11,7 @@ function PhoneInput(props: InputProps) : any {
         }
     }
     return (
-        <Input label={props.label} type="tel" name={props.name} onBlur={handleOnBlur} />
+        <Input {...props} type="tel" onBlur={handleOnBlur} />
     )
 }
 

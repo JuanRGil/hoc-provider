@@ -1,48 +1,33 @@
-import React, { ChangeEvent, FocusEvent, useState, useEffect } from 'react';
+import React, { ChangeEvent, FocusEvent} from 'react';
 import { InputProps } from '../../types/common';
+import './input.scss';
 
 export function Input(props: InputProps): any {
-  const [nativeInputProps, setNativeInputProps] = useState({ ...props });
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (props.onChange) {
-      props.onChange(e, e.target.value);
+      props.onChange(e);
     }
   };
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
     if (props.onBlur) {
-      props.onBlur(e, e.target.value);
+      props.onBlur(e);
     }
   };
-  const omitNativeInputProps = (nativeProps: string[]): InputProps => {
-    const newInputProps : {[key: string]: any} = { ...nativeInputProps };
-    nativeProps.forEach(
-      (propToOmit) => {newInputProps[propToOmit] = undefined},
-    );
-    return newInputProps as InputProps;
-  };
-  useEffect(() => {
-    setNativeInputProps(
-      omitNativeInputProps([
-        'maxLength',
-        'minLength',
-        'max',
-        'min',
-        'required',
-      ]),
-    );
-  }, []);
+
+  const {showError, errorMessages, label, ...rest} = props;
+  
   return (
     <label>
-      {props.label}
+      {label}
       <input
-        {...nativeInputProps}
+        {...rest}
         onChange={handleChange}
         onBlur={handleBlur}
       />
-      {props.showError && props.errorMessages && (
+      {showError && errorMessages && (
         <ul>
-          {props.errorMessages?.map((error) => (
-            <li>{error}</li>
+          {errorMessages?.map((error) => (
+            <li key={error}>{error}</li>
           ))}
         </ul>
       )}

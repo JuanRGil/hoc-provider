@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FocusEvent, useEffect, useState } from 'react';
 import { useFormContext } from '../providers/FormValidationProvider';
 import { InputProps, InputType, ValidatorType } from '../types/common';
-import { getLengthValidators, isRequiredValidator } from '../utils/intrinsicValidators';
+import { getLengthValidator, isRequiredValidator } from '../utils/intrinsicValidators';
 
 export const withValidators = (
   WrappedComponent: InputType,
@@ -13,6 +13,7 @@ export const withValidators = (
 ) => (props: InputProps) => {
   const { setFieldsStates } = useFormContext();
   const [intrinsicValidators, setIntrinsicValidators] = useState<ValidatorType[]>([]);
+  const [nativeInputProps, setNativeInputProps] = useState({ ...props });
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
   const setInputState = (isInputValid: boolean) => {
@@ -34,11 +35,20 @@ export const withValidators = (
 
   // TODO: generateValidatorsFromProps
   const generateValidatorsFromProps = (): ValidatorType[] => {
-    const { maxLength, minLength, required, checked } = props;
-    const lenghtValidators =
-      minLength || maxLength ? getLengthValidators(minLength, maxLength) : [];
-      const requiredValidator = required ? [isRequiredValidator] : [];
-    return [...lenghtValidators, ...requiredValidator];
+    const { maxLength, minLength, required } = props;
+    const newValidators: ValidatorType[] = [];
+    if (minLength || maxLength ){
+      const lengthValidator = getLengthValidator(minLength, maxLength);
+      if(lengthValidator){
+        newValidators.push(lengthValidator)
+      }
+      setNativeInputProps(prevInputProps => ({...prevInputProps, minLength: undefined, maxLength: undefined}));
+    }
+    if (required) {
+      newValidators.push(isRequiredValidator);
+      setNativeInputProps(prevInputProps => ({...prevInputProps, required: undefined}));
+    }
+    return newValidators;
   };
 
   const validate = (value: unknown) => {
@@ -63,26 +73,47 @@ export const withValidators = (
     setErrorMessages(newErrorMessages);
     setInputState(isInputValid);
   };
-  const handleOnBlur = (e: FocusEvent<HTMLInputElement>, value: unknown) => {
-    if (props.onBlur) {
-      if (options.validateOn === 'both' || options.validateOn === 'onBlur') {
-        validate(value || e.target.value);
+  const genericHandle = (eventFunction: 'onBlur' | 'onChange', e: FocusEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>, value: unknown) => {
+    if(props[eventFunction]){
+      if (options.validateOn === 'both' || options.validateOn === eventFunction) {
+        validate(value !== undefined ? value : e.target.value);
       }
-      props.onBlur(e, value || e.target.value);
+      // ts does not detect it is impossible that props[eventFunction] !== undefined at this point
+      // @ts-ignore
+      props[eventFunction](e, value);
     }
+  }
+
+  const handleOnBlur = (e: FocusEvent<HTMLInputElement>, value: unknown) => {
+    genericHandle('onBlur', e,  value );
+    
   };
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>, value: unknown) => {
-    if (props.onChange) {
-      if (options.validateOn === 'both' || options.validateOn === 'onChange') {
-        validate(value || e.target.value);
-      }
-      props.onChange(e, value || e.target.value);
-    }
+    genericHandle('onChange', e, value);
   };
+
+  const omitNativeInputProps = (nativeProps: string[]): InputProps => {
+    const newInputProps : {[key: string]: any} = { ...nativeInputProps };
+    nativeProps.forEach(
+      (propToOmit) => {newInputProps[propToOmit] = undefined},
+    );
+    return newInputProps as InputProps;
+  };
+  useEffect(() => {
+    setNativeInputProps(
+      omitNativeInputProps([
+        'maxLength',
+        'minLength',
+        'max',
+        'min',
+        'required',
+      ]),
+    );
+  }, []);
 
   return (
     <WrappedComponent
-      {...props}
+      {...nativeInputProps}
       onChange={(value, e) => handleOnChange(value, e)}
       onBlur={(value, e) => handleOnBlur(value, e)}
       showError={options.showMessagePolicy !== 'none'}

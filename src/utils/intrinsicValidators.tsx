@@ -29,25 +29,28 @@ const getBothLengthValidator = (minLength: number, maxLength: number) => ({
   message: `${LENGTH_BETWEEN_MESSAGE} ${minLength} y ${maxLength} ${CHARACTER_WORD}`,
 })
 
-export const getLengthValidators = (minLength: any, maxLength: any): ValidatorType[] => {
+export const getLengthValidator = (minLength: number | undefined, maxLength: number | undefined): ValidatorType | undefined => {
+  if(!minLength && !maxLength){
+    return undefined
+  }
   if (minLength === maxLength) {
-    return [getExactLengthValidator(minLength)];
+    // ts does not detect it is impossible that minLength !== undefined at this point
+    // @ts-ignore
+    return getExactLengthValidator(minLength);
   } else if( minLength && maxLength) {
-    return [getBothLengthValidator(minLength, maxLength)]
+    return getBothLengthValidator(minLength, maxLength)
   } else {
-    const lengthValidators = [];
     if (minLength) {
-      lengthValidators.push(getMinLengthValidator(minLength));
+      return getMinLengthValidator(minLength);
     }
     if (maxLength) {
-      lengthValidators.push(getMaxLengthValidator(maxLength));
+      return getMaxLengthValidator(maxLength);
     }
-    return lengthValidators;
   }
 };
 
 export const isRequiredValidator = {
-  isValid: (value: string) => {
+  isValid: (value: string | boolean) => {
     return !!value;
   },
   message: INPUT_REQUIRED_MESSAGE,

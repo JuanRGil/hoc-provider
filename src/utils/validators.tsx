@@ -25,7 +25,7 @@ export const containsD = {
 
   export const phoneValidator = {
     isValid: (phone: string) => {
-      return /^\+?(6\d{2}|7[1-9]\d{1})\d{6}$/.test(phone);
+      return !phone || /^\+?(6\d{2}|7[1-9]\d{1})\d{6}$/.test(phone);
     },
     message: `the Phone has not a correct format!!`
   }
