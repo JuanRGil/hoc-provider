@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react/display-name */
-import React, {
+import {
   ChangeEvent, FocusEvent, useEffect, useState,
 } from 'react';
 import { useFormContext } from '../providers/FormValidationProvider';
@@ -15,10 +15,11 @@ const withValidators = (
     showMessagePolicy?: 'all' | 'first' | 'none';
   } = { validateOn: 'both', showMessagePolicy: 'first' },
 ) => function WithValidator(props: InputProps) {
-  const { setFieldsStates } = useFormContext();
+  const { setFieldsStates, submitTries } = useFormContext();
   const [intrinsicValidators, setIntrinsicValidators] = useState<ValidatorType[]>([]);
   const [nativeInputProps, setNativeInputProps] = useState({ ...props });
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
+  const [valueForValidation, setValueForValidation] = useState<unknown>('');
 
   const setInputState = (isInputValid: boolean) => {
     const { name } = props;
@@ -55,6 +56,8 @@ const withValidators = (
   useEffect(() => {
     setInputState(false);
     setIntrinsicValidators(generateValidatorsFromProps());
+    console.log('display name: ', WrappedComponent.name);
+    console.log('valueForValidation: ', valueForValidation);
   }, []);
 
   const validate = (value: unknown) => {
@@ -80,6 +83,12 @@ const withValidators = (
     setInputState(isInputValid);
   };
 
+  useEffect(() => {
+    if (submitTries > 0) {
+      validate(valueForValidation);
+    }
+  }, [submitTries]);
+
   const genericHandle = (eventFunction: 'onBlur' | 'onChange', e: FocusEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>, value: unknown) => {
     if (props[eventFunction]) {
       if (options.validateOn === 'both' || options.validateOn === eventFunction) {
@@ -87,7 +96,7 @@ const withValidators = (
       }
       // ts does not detect it is impossible that props[eventFunction] !== undefined at this point
       // @ts-ignore
-      props[eventFunction](e, value);
+      props[eventFunction](e, value !== undefined ? value : e.target.value);
     }
   };
 
@@ -96,6 +105,11 @@ const withValidators = (
   };
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>, value: unknown) => {
+    if (e.target.type !== 'checkbox') {
+      setValueForValidation(e.target.value);
+    } else {
+      setValueForValidation(e.target.checked);
+    }
     genericHandle('onChange', e, value);
   };
 

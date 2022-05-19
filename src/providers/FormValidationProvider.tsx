@@ -5,11 +5,16 @@ import {
 const useFormContextValue = (contextName: string) => {
   const [fieldsState, setFieldsStates] = useState<{[key: string]: boolean}>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const [submitTries, setSubmitTries] = useState<number>(0);
 
   useEffect(() => {
     const areAllFieldsValid = Object.values(fieldsState).every((fieldValue) => fieldValue === true);
     setIsFormValid(areAllFieldsValid);
   }, [fieldsState]);
+
+  useEffect(() => {
+    console.log('submit tries: ', submitTries);
+  }, [submitTries]);
 
   const scrollToFirstNotValidField = () => {
     if (!isFormValid) {
@@ -23,8 +28,18 @@ const useFormContextValue = (contextName: string) => {
     }
   };
 
+  const canSubmit = () => {
+    if (!isFormValid) {
+      scrollToFirstNotValidField();
+      setSubmitTries((prevTries) => prevTries + 1);
+    }
+    return isFormValid;
+  };
+
   return {
     isFormValid,
+    canSubmit,
+    submitTries,
     scrollToFirstNotValidField,
     setIsFormValid,
     fieldsState,

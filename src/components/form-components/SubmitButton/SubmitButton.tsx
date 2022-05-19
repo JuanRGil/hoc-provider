@@ -1,12 +1,11 @@
 import { useFormContext } from '../../../providers/FormValidationProvider';
 
 function SubmitButton() {
-  const { isFormValid, scrollToFirstNotValidField } = useFormContext();
+  const { isFormValid, canSubmit } = useFormContext();
   const handleOnClick = () => {
-    if (isFormValid) {
+    if (canSubmit()) {
       console.log('proceed');
     } else {
-      scrollToFirstNotValidField();
       console.log('stop');
     }
   };
