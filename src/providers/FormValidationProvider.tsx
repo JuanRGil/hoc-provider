@@ -1,42 +1,47 @@
-import {createContext, useContext, useEffect, useState} from 'react';
+import {
+  createContext, useContext, useEffect, useState,
+} from 'react';
 
 const useFormContextValue = (contextName: string) => {
   const [fieldsState, setFieldsStates] = useState<{[key: string]: boolean}>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
-  useEffect(()=> {
-    console.log({context: contextName, fieldsState});
-    const areAllFieldsValid = Object.values(fieldsState).every((fieldValue)=> fieldValue === true);
+  useEffect(() => {
+    const areAllFieldsValid = Object.values(fieldsState).every((fieldValue) => fieldValue === true);
     setIsFormValid(areAllFieldsValid);
-  }, [fieldsState])
+  }, [fieldsState]);
 
   const scrollToFirstNotValidField = () => {
-    if(!isFormValid){
-      const keyFounded = Object.keys(fieldsState).find(key => fieldsState[key] === false);
+    if (!isFormValid) {
+      const keyFounded = Object.keys(fieldsState).find((key) => fieldsState[key] === false);
       const element = document.getElementById(contextName)?.querySelector(`input[name=${keyFounded}]`);
-      if(element) {
-        element.scrollIntoView({ behavior: 'smooth'});
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
       } else {
-        console.warn(`input element with name ${keyFounded} has not been found `)
+        console.warn(`input element with name ${keyFounded} has not been found `);
       }
     }
-  }
+  };
 
   return {
-    isFormValid, 
+    isFormValid,
     scrollToFirstNotValidField,
-    setIsFormValid, 
-    fieldsState, 
+    setIsFormValid,
+    fieldsState,
     setFieldsStates,
-  }
-}
+  };
+};
 export const FormContext = createContext({} as ReturnType<typeof useFormContextValue>);
 
 export const useFormContext = () => useContext(FormContext);
 
-export const FormValidationProvider = (props: { children: any; contextName: string, className: string }) => {
-  
-  const {children, contextName, className } = props;
+export function FormValidationProvider(props:
+  {
+    children: any;
+    contextName: string,
+    className: string,
+  }) {
+  const { children, contextName, className } = props;
   return (
     <FormContext.Provider value={useFormContextValue(contextName)}>
       <div className={className} id={contextName}>
@@ -44,4 +49,4 @@ export const FormValidationProvider = (props: { children: any; contextName: stri
       </div>
     </FormContext.Provider>
   );
-};
+}

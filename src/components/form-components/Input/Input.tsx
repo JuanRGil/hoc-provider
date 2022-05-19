@@ -1,8 +1,8 @@
-import React, { ChangeEvent, FocusEvent} from 'react';
-import { InputProps } from '../../types/common';
+import { ChangeEvent, FocusEvent } from 'react';
+import { InputProps } from '../../../types/common';
 import './input.scss';
 
-export function Input(props: InputProps): any {
+function Input(props: InputProps): any {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (props.onChange) {
       props.onChange(e);
@@ -14,8 +14,10 @@ export function Input(props: InputProps): any {
     }
   };
 
-  const {showError, errorMessages, label, ...rest} = props;
-  
+  const {
+    showError, errorMessages, label, ...rest
+  } = props;
+
   return (
     <label>
       {label}
@@ -34,3 +36,4 @@ export function Input(props: InputProps): any {
     </label>
   );
 }
+export default Input;

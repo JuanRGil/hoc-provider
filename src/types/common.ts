@@ -1,10 +1,12 @@
-import { ChangeEvent, ComponentType, FocusEvent, InputHTMLAttributes } from "react";
+import {
+  ChangeEvent, ComponentType, FocusEvent, InputHTMLAttributes,
+} from 'react';
 
 export type OnChangeFunction = (e: ChangeEvent<HTMLInputElement>, value?: any)=> void
 export type OnBlurFunction = (e: FocusEvent<HTMLInputElement>, value?: any)=> void
 
 declare interface CustomInput extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange'> {
-    name: string; //required
+    name: string; // required
     label: string;
     errorMessages?: string[];
     showError?: boolean;
