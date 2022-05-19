@@ -1,4 +1,4 @@
-import { withValidators } from '../../../hoc/withValidators';
+import withValidators from '../../../hoc/withValidators';
 import { InputProps } from '../../../types/common';
 import { phoneValidator } from '../../../utils/validators';
 import Input from '../Input/Input';

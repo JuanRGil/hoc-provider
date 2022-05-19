@@ -1,4 +1,4 @@
-import { withValidators } from '../../../hoc/withValidators';
+import withValidators from '../../../hoc/withValidators';
 import { InputProps } from '../../../types/common';
 import { isRequiredValidator } from '../../../utils/intrinsicValidators';
 import Input from '../Input/Input';

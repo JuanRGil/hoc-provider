@@ -31,16 +31,16 @@ function App() {
           <ValidateWithFirstMessage label="With One Error" name="firstMsgs" required onBlur={handleOnBlur} onChange={handleOnChange} />
           <PhoneInput label="Telefono" name="phoneNumber" onBlur={handleOnBlur} onChange={handleOnChange} />
         </Paper>
+        <SubmitButton />
       </FormValidationProvider>
-      <FormValidationProvider className="form-provider" contextName="form-text-inputs">
+      <FormValidationProvider className="form-provider" contextName="form-checkbox-radio-select">
         <Paper title="Checkboxes Radio and Select">
           <PhoneInput label="Telefono" name="phoneNumber" onBlur={handleOnBlur} onChange={handleOnChange} />
           <CheckBox label="Checkbox" name="mycheck" onBlur={handleOnBlur} />
-
         </Paper>
+        <SubmitButton />
       </FormValidationProvider>
 
-      <SubmitButton />
       <div className="form-provider">
         <ValidateWithAllMessages label="With All Errors" name="allMsgs2" onChange={handleOnChange} onBlur={handleOnBlur} />
         <ValidateWithoutMessages label="With No Errors" name="noMsgs2" onChange={handleOnChange} onBlur={handleOnBlur} />
