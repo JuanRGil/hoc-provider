@@ -1,7 +1,7 @@
 import { useFormContext } from '../../../providers/FormValidationProvider';
 
 function SubmitButton() {
-  const { isFormValid, canSubmit } = useFormContext();
+  const { canSubmit } = useFormContext();
   const handleOnClick = () => {
     if (canSubmit()) {
       console.log('proceed');

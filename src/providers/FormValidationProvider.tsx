@@ -37,12 +37,8 @@ const useFormContextValue = (contextName: string) => {
   };
 
   return {
-    isFormValid,
     canSubmit,
     submitTries,
-    scrollToFirstNotValidField,
-    setIsFormValid,
-    fieldsState,
     setFieldsStates,
   };
 };
