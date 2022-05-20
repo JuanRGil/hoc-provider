@@ -1,8 +1,10 @@
-import { ChangeEvent, FocusEvent, InputHTMLAttributes } from 'react';
+import {
+  ChangeEvent, FocusEvent, InputHTMLAttributes, useRef,
+} from 'react';
 import { ValidableProps } from '../../../types/common';
-import './input.scss';
 
 function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange'>): any {
+  const inputElement = useRef<HTMLInputElement>(null);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (props.onChange) {
       props.onChange(e);
@@ -19,13 +21,18 @@ function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement
   } = props;
 
   return (
-    <label>
-      {label}
+    <div className="input-container">
       <input
+        type="text"
         {...rest}
+        id={rest.name}
+        ref={inputElement}
         onChange={handleChange}
         onBlur={handleBlur}
       />
+      <label htmlFor={rest.name} className={`${inputElement?.current?.type} ${inputElement?.current?.value ? 'not-empty' : ''}`.trim()}>
+        {label}
+      </label>
       {showError && errorMessages && (
         <ul>
           {errorMessages?.map((error) => (
@@ -33,7 +40,8 @@ function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement
           ))}
         </ul>
       )}
-    </label>
+    </div>
+
   );
 }
 export default Input;

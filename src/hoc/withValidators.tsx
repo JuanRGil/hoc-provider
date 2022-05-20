@@ -92,11 +92,11 @@ const withValidators = (
   }, [submitTries]);
 
   const genericHandle = (eventFunction: 'onBlur' | 'onChange', e: FocusEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>, value: unknown) => {
+    if (options.validateOn === 'both' || options.validateOn === eventFunction) {
+      validate(value !== undefined ? value : e.target.value);
+    }
     if (props[eventFunction]) {
-      if (options.validateOn === 'both' || options.validateOn === eventFunction) {
-        validate(value !== undefined ? value : e.target.value);
-      }
-      // ts does not detect it is impossible that props[eventFunction] !== undefined at this point
+      // ts does not detect it is impossible that props[eventFunction] === undefined at this point
       // @ts-ignore
       props[eventFunction](e, value !== undefined ? value : e.target.value);
     }

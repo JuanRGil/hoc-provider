@@ -1,4 +1,5 @@
 import './App.scss';
+import './global-styles/inputs.scss';
 import withValidators from './hoc/withValidators';
 import Input from './components/form-components/Input/Input';
 import { FormValidationProvider } from './providers/FormValidationProvider';
@@ -18,13 +19,13 @@ function App() {
   const ValidateWithFirstMessage = withValidators(Input, [containsD, containsA, containsB, containsC], { validateOn: 'onBlur', showMessagePolicy: 'first' });
   const InputDni = withValidators(Input, [{ isValid: (value) => !value || /^[0-9]{8,8}[A-Za-z]$/.test(value), message: 'invalid dni' }]);
   const CustomReqMessage = withValidators(Input, [{ ...isRequiredValidator, message: 'my custom required message' }]);
-  const ReqCheck = withValidators(CheckBox, []);
+  const ReqCheck = withValidators(CheckBox, [], { validateOn: 'onBlur', showMessagePolicy: 'all' });
   const ReqRadio = withValidators(RadioGroup, [isRequiredValidator]);
 
-  const handleOnChange = (e: any, value: any) => {
+  const handleOnChange = (e, value) => {
     console.log({ value });
   };
-  const handleOnBlur = (e: any, value: any) => {
+  const handleOnBlur = (e, value) => {
     console.log({ value });
   };
 
@@ -44,7 +45,7 @@ function App() {
       <FormValidationProvider className="form-provider" contextName="form-checkbox-radio-select">
         <Paper title="Checkboxes Radio and Select">
           <CheckBox label="Checkbox" name="mycheck" onBlur={handleOnBlur} />
-          <ReqCheck label="Checkbox (*)" required name="mycheck-req" onBlur={handleOnBlur} onChange={handleOnChange} />
+          <ReqCheck label="Checkbox (*)" required name="mycheck-req" />
           <ReqRadio
             label="RadioGroup"
             name="radio-group"
