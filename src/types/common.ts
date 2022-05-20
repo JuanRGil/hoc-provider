@@ -11,15 +11,19 @@ declare interface CustomInput extends Omit<InputHTMLAttributes<HTMLInputElement>
     errorMessages?: string[];
     showError?: boolean;
 }
-declare interface InputWithOnBlurRequired extends CustomInput {
+declare interface WithOnBlurRequired {
     onBlur: OnBlurFunction;
     onChange?: OnChangeFunction;
 }
-declare interface InputWithOnChangeRequired extends CustomInput {
+declare interface WithOnChangeRequired{
     onBlur?: OnBlurFunction;
     onChange: OnChangeFunction;
 }
 
-export type InputProps = InputWithOnBlurRequired | InputWithOnChangeRequired;
+export type InputProps = (WithOnBlurRequired | WithOnChangeRequired) & CustomInput;
 export type InputType = ComponentType<InputProps>;
+
+export type ValidableProps = (WithOnBlurRequired | WithOnChangeRequired);
+export type ValidableType = ComponentType<ValidableProps>;
+
 export type ValidatorType = {isValid: (value: any) => boolean, message: string};
