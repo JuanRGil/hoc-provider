@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { InputProps } from '../../../../types/common';
+import { ValidableProps } from '../../../../types/common';
 import Input from '../Input';
 
-function RadioElement(props: InputProps) : any {
+function RadioElement(props: ValidableProps) : any {
   const handleOnBlur = (e: any) => {
     if (props.onBlur) {
       props.onBlur(e);

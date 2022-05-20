@@ -1,20 +1,22 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react/display-name */
 import {
-  ChangeEvent, FocusEvent, useEffect, useState,
+  ChangeEvent, ComponentType, FocusEvent, useEffect, useState,
 } from 'react';
 import { useFormContext } from '../providers/FormValidationProvider';
-import { InputProps, InputType, ValidatorType } from '../types/common';
+import {
+  ValidableProps, ValidatorType,
+} from '../types/common';
 import { getLengthValidator, isRequiredValidator } from '../utils/intrinsicValidators';
 
 const withValidators = (
-  WrappedComponent: InputType,
+  WrappedComponent: ComponentType<any>,
   validators: ValidatorType[],
   options: {
     validateOn?: 'onBlur' | 'onChange' | 'both';
     showMessagePolicy?: 'all' | 'first' | 'none';
   } = { validateOn: 'both', showMessagePolicy: 'first' },
-) => function WithValidator(props: InputProps) {
+) => function WithValidator<T extends ValidableProps>(props: T) {
   const { setFieldsStates, submitTries } = useFormContext();
   const [intrinsicValidators, setIntrinsicValidators] = useState<ValidatorType[]>([]);
   const [nativeInputProps, setNativeInputProps] = useState({ ...props });
@@ -116,8 +118,12 @@ const withValidators = (
   return (
     <WrappedComponent
       {...nativeInputProps}
-      onChange={(value, e) => handleOnChange(value, e)}
-      onBlur={(value, e) => handleOnBlur(value, e)}
+      onChange={
+        (e: ChangeEvent<HTMLInputElement>, value: unknown) => handleOnChange(e, value)
+      }
+      onBlur={
+        (e: FocusEvent<HTMLInputElement>, value: unknown) => handleOnBlur(e, value)
+      }
       showError={options.showMessagePolicy !== 'none'}
       errorMessages={errorMessages}
     />

@@ -1,8 +1,8 @@
-import { ChangeEvent, FocusEvent } from 'react';
-import { InputProps } from '../../../types/common';
+import { ChangeEvent, FocusEvent, InputHTMLAttributes } from 'react';
+import { ValidableProps } from '../../../types/common';
 import './input.scss';
 
-function Input(props: InputProps): any {
+function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange'>): any {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (props.onChange) {
       props.onChange(e);

@@ -17,9 +17,9 @@ function App() {
   const ValidateWithoutMessages = withValidators(Input, [containsD, containsA, containsB, containsC], { validateOn: 'onBlur', showMessagePolicy: 'all' });
   const ValidateWithFirstMessage = withValidators(Input, [containsD, containsA, containsB, containsC], { validateOn: 'onBlur', showMessagePolicy: 'first' });
   const InputDni = withValidators(Input, [{ isValid: (value) => !value || /^[0-9]{8,8}[A-Za-z]$/.test(value), message: 'invalid dni' }]);
-  const InputDniWithÑ = withValidators(Input, [{ ...isRequiredValidator, message: 'my custom required message' }]);
+  const CustomReqMessage = withValidators(Input, [{ ...isRequiredValidator, message: 'my custom required message' }]);
   const ReqCheck = withValidators(CheckBox, []);
-  // const ReqRadio = withValidators(RadioGroup, [isRequiredValidator]);
+  const ReqRadio = withValidators(RadioGroup, [isRequiredValidator]);
 
   const handleOnChange = (e: any, value: any) => {
     console.log({ value });
@@ -37,15 +37,15 @@ function App() {
           <ValidateWithoutMessages label="With No Errors" name="noMsgs" onBlur={handleOnBlur} onChange={handleOnChange} />
           <PhoneInput label="Telefono" name="phoneNumber" onBlur={handleOnBlur} onChange={handleOnChange} />
           <InputDni label="DNI: " required name="dni" onBlur={handleOnBlur} />
-          <InputDniWithÑ label="DNI: " name="cuistom-required" onBlur={handleOnBlur} />
+          <CustomReqMessage label="Custom Message: " name="cuistom-required" onBlur={handleOnBlur} />
         </Paper>
         <SubmitButton />
       </FormValidationProvider>
       <FormValidationProvider className="form-provider" contextName="form-checkbox-radio-select">
         <Paper title="Checkboxes Radio and Select">
           <CheckBox label="Checkbox" name="mycheck" onBlur={handleOnBlur} />
-          <ReqCheck label="Checkbox (*)" required name="mycheck-req" onBlur={handleOnBlur} />
-          <RadioGroup
+          <ReqCheck label="Checkbox (*)" required name="mycheck-req" onBlur={handleOnBlur} onChange={handleOnChange} />
+          <ReqRadio
             label="RadioGroup"
             name="radio-group"
             radioOptions={[

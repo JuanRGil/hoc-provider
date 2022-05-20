@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { InputProps } from '../../../../types/common';
+import { ValidableProps } from '../../../../types/common';
 import RadioElement from './RadioElement';
 import RadioOption from './types/RadioOption';
 
 function RadioGroup(
-  props: InputProps
+  props: ValidableProps
     & {defaultRadioOption : RadioOption, radioOptions : RadioOption[]},
 ) : any {
   const [
@@ -26,7 +26,9 @@ function RadioGroup(
       props.onChange(e, selectedRadioOption);
     }
   };
-  const { label, name, radioOptions } = props;
+  const {
+    label, name, radioOptions, showError, errorMessages,
+  } = props;
   return (
     <div className="radio-group" onBlur={handleOnBlur}>
       <label>
@@ -43,6 +45,13 @@ function RadioGroup(
             />
           ))}
         </div>
+        {showError && errorMessages && (
+        <ul>
+          {errorMessages?.map((error) => (
+            <li key={error}>{error}</li>
+          ))}
+        </ul>
+        )}
       </label>
 
     </div>
