@@ -1,11 +1,12 @@
 import {
-  ChangeEvent, FocusEvent, InputHTMLAttributes, useRef,
+  ChangeEvent, FocusEvent, InputHTMLAttributes, useState,
 } from 'react';
 import { ValidableProps } from '../../../types/common';
 
 function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange'>): any {
-  const inputElement = useRef<HTMLInputElement>(null);
+  const [value, setValue] = useState<string | number | readonly string[] | undefined>();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
     if (props.onChange) {
       props.onChange(e);
     }
@@ -23,14 +24,13 @@ function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement
   return (
     <div className="input-container">
       <input
-        type="text"
         {...rest}
+        value={value}
         id={rest.name}
-        ref={inputElement}
         onChange={handleChange}
         onBlur={handleBlur}
       />
-      <label htmlFor={rest.name} className={`${inputElement?.current?.type} ${inputElement?.current?.value ? 'not-empty' : ''}`.trim()}>
+      <label htmlFor={rest.name} className={`${rest.type} ${value ? 'not-empty' : ''}`.trim()}>
         {label}
       </label>
       {showError && errorMessages && (
@@ -44,4 +44,8 @@ function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement
 
   );
 }
+
+Input.defaultProps = {
+  type: 'text',
+};
 export default Input;

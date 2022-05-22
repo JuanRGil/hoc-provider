@@ -50,6 +50,7 @@ export const getLengthValidator = (
   if (maxLength) {
     return getMaxLengthValidator(maxLength);
   }
+  return undefined;
 };
 
 export const isRequiredValidator = {
