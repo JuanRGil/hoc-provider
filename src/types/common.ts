@@ -25,6 +25,7 @@ declare interface WithOnChangeRequired{
 }
 
 export type ValidableProps = (WithOnBlurRequired | WithOnChangeRequired) & PropsForValidation;
+export type Omit<T, K extends string> = Pick<T, Exclude<keyof T, K>>;
 
 export type ValidableType = ComponentType<ValidableProps>;
 

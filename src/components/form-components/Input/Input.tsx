@@ -4,7 +4,7 @@ import {
 import { ValidableProps } from '../../../types/common';
 
 function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange'>): any {
-  const [value, setValue] = useState<string | number | readonly string[] | undefined>();
+  const [value, setValue] = useState<string | number | readonly string[] | undefined>(props.value || '');
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     if (props.onChange) {

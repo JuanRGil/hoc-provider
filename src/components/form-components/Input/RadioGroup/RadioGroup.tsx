@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { ValidableProps } from '../../../../types/common';
 import RadioElement from './RadioElement';
 import RadioOption from './types/RadioOption';
 
 function RadioGroup(
-  props: ValidableProps
-    & {defaultRadioOption : RadioOption, radioOptions : RadioOption[]},
+  props : ValidableProps
+    & {defaultRadioOption: RadioOption | undefined, radioOptions : RadioOption[]},
 ) : any {
   const [
     selectedOption,
@@ -58,7 +58,7 @@ function RadioGroup(
   );
 }
 // {id: number | string, label: string, value: unknown};
-RadioGroup.propTypes = {
+/* RadioGroup.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   defaultRadioOption: PropTypes.shape({
@@ -78,5 +78,5 @@ RadioGroup.propTypes = {
 RadioGroup.defaultProps = {
   defaultRadioOption: undefined,
 };
-
+*/
 export default RadioGroup;
