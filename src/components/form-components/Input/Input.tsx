@@ -24,8 +24,8 @@ function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement
   return (
     <div className="input-container">
       <input
-        {...rest}
         value={value}
+        {...rest}
         id={rest.name}
         onChange={handleChange}
         onBlur={handleBlur}
