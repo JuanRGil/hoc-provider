@@ -9,6 +9,9 @@ $input-error-height: 16px;
 
 .input-container{
     height: $input-info-height+$input-error-height;
+    &.-checkbox, &.-radio{
+        height: $input-height + $input-error-height;
+    }
     .input-info {
         display: flex;
         flex-direction: column-reverse;
@@ -16,6 +19,7 @@ $input-error-height: 16px;
         height: $input-info-height;
         &.-checkbox, &.-radio{
             flex-direction: row;
+            height:auto;
         }
         input[type="text"], input[type="tel"]{
             border: none;

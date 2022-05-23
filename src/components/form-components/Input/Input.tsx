@@ -43,7 +43,7 @@ function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement
   };
 
   return (
-    <div className="input-container">
+    <div className={`input-container -${rest.type}`}>
       <div className={`input-info -${rest.type}`}>
         <input
           value={value}
