@@ -7,6 +7,7 @@ import {
   LENGTH_EXACT_MESSAGE,
   LENGTH_MAX_MESSAGE,
   LENGTH_MIN_MESSAGE,
+  DEFAULT_PATTERN_MGS,
 } from './DEFAULT_MESSAGES';
 
 const getMinLengthValidator = (minLength: number) => ({
@@ -57,3 +58,8 @@ export const isRequiredValidator = {
   isValid: (value: string | boolean) => !!value,
   message: INPUT_REQUIRED_MESSAGE,
 };
+
+export const getPatternValidator = (pattern: RegExp, patternMgs: string = DEFAULT_PATTERN_MGS) => ({
+  isValid: (value: string) => pattern.test(value),
+  message: patternMgs,
+});

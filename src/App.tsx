@@ -19,26 +19,32 @@ function App() {
   const ValidateWithFirstMessage = withValidators(Input, [containsD, containsA, containsB, containsC], { validateOn: 'onBlur', showMessagePolicy: 'first' });
   const InputDni = withValidators(Input, [{ isValid: (value) => !value || /^[0-9]{8,8}[A-Za-z]$/.test(value), message: 'invalid dni' }]);
   const CustomReqMessage = withValidators(Input, [{ ...isRequiredValidator, message: 'my custom required message' }]);
+  const WithPattern = withValidators(Input, []);
   const ReqCheck = withValidators(CheckBox, [], { validateOn: 'onBlur', showMessagePolicy: 'all' });
   const ReqRadio = withValidators(RadioGroup, [isRequiredValidator]);
 
-  const handleOnChange = (e: any, value: any) => {
-    console.log({ value });
+  const handleOnChange = (e: any) => {
+    console.log({ value: e.target.value });
   };
-  const handleOnBlur = (e: any, value: any) => {
-    console.log({ value });
+  const handleOnBlur = (e: any) => {
+    console.log({ value: e.target.value });
   };
 
   return (
     <div>
       <FormValidationProvider className="form-provider" contextName="form-text-inputs">
-        <Paper title="Several Inputs">
-          <ValidateWithAllMessages label="With All Errors (*)" name="allMsgs" required minLength={4} onBlur={handleOnBlur} onChange={handleOnChange} />
-          <ValidateWithFirstMessage label="With One Error (*)" name="firstMsgs" required onBlur={handleOnBlur} onChange={handleOnChange} />
-          <ValidateWithoutMessages label="With No Errors" name="noMsgs" onBlur={handleOnBlur} onChange={handleOnChange} />
-          <PhoneInput label="Telefono" name="phoneNumber" onBlur={handleOnBlur} onChange={handleOnChange} />
-          <InputDni label="DNI: " required name="dni" onBlur={handleOnBlur} />
-          <CustomReqMessage label="Custom Message: " name="cuistom-required" onBlur={handleOnBlur} />
+        <Paper title="Inputs with Validator HOC">
+          <ValidateWithAllMessages label="With All Errors (*)" name="HOC-allMsgs" required minLength={4} onBlur={handleOnBlur} onChange={handleOnChange} />
+          <ValidateWithFirstMessage label="With One Error (*)" name="HOC-firstMsgs" required onBlur={handleOnBlur} onChange={handleOnChange} />
+          <ValidateWithoutMessages label="With No Errors" name="HOC-noMsgs" onBlur={handleOnBlur} onChange={handleOnChange} />
+          <InputDni label="DNI: " required name="HOC-dni" onBlur={handleOnBlur} />
+          <CustomReqMessage label="Custom Message: " name="HOC-cuistom-required" onBlur={handleOnBlur} />
+          <WithPattern label="Only number (default msg)" name="HOC-with-pattern" pattern={/^\d*$/} onBlur={handleOnBlur} />
+          <WithPattern label="Only number (custom msg)" name="HOC-with-pattern-custom-msg" pattern={/^\d*$/} patternMgs="Only numbers" onBlur={handleOnBlur} />
+        </Paper>
+        <Paper title="Inputs without Validator HOC">
+          <PhoneInput label="Telefono" name="phoneNumber" onChange={handleOnChange} />
+          <Input label="Only numbers" name="with-pattern" onBlur={handleOnBlur} />
         </Paper>
         <SubmitButton />
       </FormValidationProvider>

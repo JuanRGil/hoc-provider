@@ -5,12 +5,12 @@ import Input from '../Input';
 function CheckBox(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange'>) : any {
   const handleOnBlur = (e: any) => {
     if (props.onBlur) {
-      props.onBlur(e, e.target.checked);
+      props.onBlur(e);
     }
   };
   const handleOnChange = (e: any) => {
     if (props.onChange) {
-      props.onChange(e, e.target.checked);
+      props.onChange(e);
     }
   };
   return (

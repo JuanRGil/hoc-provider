@@ -1,18 +1,21 @@
 import {
-  ChangeEvent, ComponentClass, ComponentType, FocusEvent, FunctionComponent,
+  ChangeEvent, ComponentClass, FocusEvent, FunctionComponent,
 } from 'react';
 
-export type OnChangeFunction = (e: ChangeEvent<HTMLInputElement>, value?: any)=> void
-export type OnBlurFunction = (e: FocusEvent<HTMLInputElement>, value?: any)=> void
+export type OnChangeFunction = (e: ChangeEvent<HTMLInputElement>)=> void
+export type OnBlurFunction = (e: FocusEvent<HTMLInputElement>)=> void
 
 declare interface PropsForValidation {
     name: string; // required
     label: string;
     errorMessages?: string[];
     showError?: boolean;
+    withValidator?: boolean;
     maxLength?: number;
     minLength?: number;
     required?: boolean;
+    pattern?: RegExp;
+    patternMgs?: string;
     readOnly?: boolean
 }
 declare interface WithOnBlurRequired {

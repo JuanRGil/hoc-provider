@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import './radio-group.scss';
 import { useState } from 'react';
 import { ValidableProps } from '../../../../types/common';
 import RadioElement from './RadioElement';
@@ -22,8 +23,15 @@ function RadioGroup(
     const { value } = e.target;
     const selectedRadioOption = radioOptions.find((option) => option.id === value);
     setSelectedOption(selectedRadioOption);
+    const radioGroupEvent = {
+      ...e,
+      target: {
+        ...e.target,
+        value: selectedRadioOption,
+      },
+    };
     if (props.onChange) {
-      props.onChange(e, selectedRadioOption);
+      props.onChange(radioGroupEvent);
     }
   };
   const {

@@ -8,7 +8,7 @@ import {
   CustomComponentType,
   ValidableProps, ValidatorType,
 } from '../types/common';
-import { getLengthValidator, isRequiredValidator } from '../utils/intrinsicValidators';
+import { getPatternValidator, getLengthValidator, isRequiredValidator } from '../utils/intrinsicValidators';
 
 const withValidators = <P extends ValidableProps>(
   WrappedComponent: CustomComponentType<P>,
@@ -40,8 +40,13 @@ const withValidators = <P extends ValidableProps>(
 
     // TODO: generateValidatorsFromProps
     const generateValidatorsFromProps = (): ValidatorType[] => {
-      const { maxLength, minLength, required } = props;
+      const {
+        maxLength, minLength, required, pattern, patternMgs,
+      } = props;
       const newValidators: ValidatorType[] = [];
+      /**
+       * LENGTH VALIDATORS
+       */
       if (minLength || maxLength) {
         const lengthValidator = getLengthValidator(minLength, maxLength);
         if (lengthValidator) {
@@ -55,10 +60,22 @@ const withValidators = <P extends ValidableProps>(
           }),
         );
       }
+      /**
+       * REQUIRED VALIDATOR
+       */
       if (required) {
         newValidators.push(isRequiredValidator);
         setNativeInputProps((prevInputProps) => ({ ...prevInputProps, required: undefined }));
       }
+
+      /**
+       * PATTERN VALIDATOR
+       */
+      if (pattern) {
+        newValidators.push(getPatternValidator(pattern, patternMgs));
+        setNativeInputProps((prevInputProps) => ({ ...prevInputProps, required: undefined }));
+      }
+
       return newValidators;
     };
 
@@ -98,38 +115,43 @@ const withValidators = <P extends ValidableProps>(
       }
     }, [submitTries]);
 
-    const genericHandle = (eventFunction: 'onBlur' | 'onChange', e: FocusEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>, value: unknown) => {
+    const genericHandle = (eventFunction: 'onBlur' | 'onChange', e: FocusEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>) => {
       if (options.validateOn === 'both' || options.validateOn === eventFunction) {
-        validate(value !== undefined ? value : e.target.value);
+        if (e.target.type !== 'checkbox') {
+          validate(e.target.value);
+        } else {
+          validate(e.target.checked);
+        }
       }
       if (props[eventFunction]) {
         // ts does not detect it is impossible that props[eventFunction] === undefined at this point
         // @ts-ignore
-        props[eventFunction](e, value !== undefined ? value : e.target.value);
+        props[eventFunction](e);
       }
     };
 
-    const handleOnBlur = (e: FocusEvent<HTMLInputElement>, value: unknown) => {
-      genericHandle('onBlur', e, value);
+    const handleOnBlur = (e: FocusEvent<HTMLInputElement>) => {
+      genericHandle('onBlur', e);
     };
 
-    const handleOnChange = (e: ChangeEvent<HTMLInputElement>, value: unknown) => {
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.type !== 'checkbox') {
         setValueForValidation(e.target.value);
       } else {
         setValueForValidation(e.target.checked);
       }
-      genericHandle('onChange', e, value);
+      genericHandle('onChange', e);
     };
 
     return (
       <WrappedComponent
         {...nativeInputProps as any}
+        withValidator
         onChange={
-        (e: ChangeEvent<HTMLInputElement>, value: unknown) => handleOnChange(e, value)
+        (e: ChangeEvent<HTMLInputElement>) => handleOnChange(e)
       }
         onBlur={
-        (e: FocusEvent<HTMLInputElement>, value: unknown) => handleOnBlur(e, value)
+        (e: FocusEvent<HTMLInputElement>) => handleOnBlur(e)
       }
         showError={options.showMessagePolicy !== 'none'}
         errorMessages={errorMessages}

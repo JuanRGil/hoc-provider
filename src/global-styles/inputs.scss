@@ -1,46 +1,67 @@
 @import 'colors';
-.input-container {
-    display: flex;
-    flex-direction: column;
-    max-width: 200px;
-    margin-top: 20px;
-    label {
-        &.text, &.tel {
-            position: relative;
-            top: -5px;
-            left: 5px;
-            font-size: 1rem;
-            transition: all 0.3s ease-in-out;
+$input-height: 20px;
+$border-botton-width: 1px;
+$label-font-size: 14px;
+$label-margin: 6px;
+$label-height: 20px;
+$input-info-height: $input-height + $label-height + $label-margin + $border-botton-width;
+$input-error-height: 16px;
+
+.input-container{
+    height: $input-info-height+$input-error-height;
+    .input-info {
+        display: flex;
+        flex-direction: column-reverse;
+        max-width: 250px;
+        height: $input-info-height;
+        &.-checkbox, &.-radio{
+            flex-direction: row;
+        }
+        input[type="text"], input[type="tel"]{
+            border: none;
+            border-bottom: $border-botton-width solid;
             background: transparent;
-            padding: 2px 5px;
-            &.not-empty{
-                top: -25px;
+            padding: 0px;
+            height: $input-height;
+            &:focus-visible {
+                outline:none;
+            }
+            &:focus + label {
+                top: 0px;
+                font-size: 0.8rem;
+                height: $label-height;
+                margin-bottom: $label-margin;
+              }
+    
+        }
+        label {
+            &.text, &.tel {
                 font-size: 1rem;
+                transition: all 0.3s ease-in-out;
+                background: transparent;
+                position: relative;
+                top: 20px;
+                margin-bottom: 0px;
+                &.not-empty{
+                    top: 0px;
+                    font-size: 0.8rem;
+                    height: $label-height;
+                    margin-bottom: $label-margin;
+                }
             }
         }
-        
-        
-    }
-    input{
-        border: none;
-        border-bottom: 1px solid;position: relative;
-        background: transparent;
-        padding: 2px 5px;
-        margin-bottom: -20px;
-        &:focus + label {
-            top: -25px;
-            font-size: 1rem;
-          }
 
     }
-    ul{
-        margin: 0px;
-        padding: 0px;
-        li{
-            list-style:none;
-            font-size: 12px;
-            padding-left: 5px;
-            color: $red;
+    .input-error{
+        ul{
+            margin: 0px;
+            padding: 0px;
+            li{
+                list-style:none;
+                font-size: 12px;
+                padding-left: 5px;
+                color: $red;
+            }
         }
     }
 }

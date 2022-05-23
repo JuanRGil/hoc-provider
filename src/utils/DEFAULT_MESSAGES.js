@@ -32,3 +32,5 @@ export const INVALID_PASSWORD_MESSAGE = 'Formato no váexport const LIDO= al men
 export const INVALID_NUMBERS_ONLY_MESSAGE = 'Tan sólo se permiten números';
 // Dni letters
 export const VALID_DNI_LETTERS = 'TRWAGMYFPDXBNJZSQVHLCKE';
+// pattern
+export const DEFAULT_PATTERN_MGS = 'El formato del campo es inválido';
