@@ -1,5 +1,5 @@
 import {
-  ChangeEvent, ComponentType, FocusEvent, InputHTMLAttributes,
+  ChangeEvent, ComponentClass, ComponentType, FocusEvent, FunctionComponent,
 } from 'react';
 
 export type OnChangeFunction = (e: ChangeEvent<HTMLInputElement>, value?: any)=> void
@@ -24,9 +24,14 @@ declare interface WithOnChangeRequired{
     onChange: OnChangeFunction;
 }
 
+interface ComponentClassWithAnyPropTypes<P> extends ComponentClass<P>{
+    propTypes?: any;
+}
+interface FunctionComponentWithAnyPropTypes<P> extends FunctionComponent<P>{
+    propTypes?: any;
+}
+export type CustomComponentType<P> = ComponentClassWithAnyPropTypes<P>
+| FunctionComponentWithAnyPropTypes<P>;
 export type ValidableProps = (WithOnBlurRequired | WithOnChangeRequired) & PropsForValidation;
-export type Omit<T, K extends string> = Pick<T, Exclude<keyof T, K>>;
-
-export type ValidableType = ComponentType<ValidableProps>;
 
 export type ValidatorType = {isValid: (value: any) => boolean, message: string};

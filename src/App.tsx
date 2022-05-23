@@ -12,10 +12,7 @@ import CheckBox from './components/form-components/Input/CheckBox/CheckBox';
 import Paper from './components/this-app-components/Paper/Paper';
 import { isRequiredValidator } from './utils/intrinsicValidators';
 import RadioGroup from './components/form-components/Input/RadioGroup/RadioGroup';
-/*
-function ShitComp(props: { shitProp: string }) {
-  return <div>{props.shitProp}</div>;
-} */
+
 function App() {
   const ValidateWithAllMessages = withValidators(Input, [containsA, containsB], { validateOn: 'both', showMessagePolicy: 'all' });
   const ValidateWithoutMessages = withValidators(Input, [containsD, containsA, containsB, containsC], { validateOn: 'onBlur', showMessagePolicy: 'all' });
@@ -24,7 +21,6 @@ function App() {
   const CustomReqMessage = withValidators(Input, [{ ...isRequiredValidator, message: 'my custom required message' }]);
   const ReqCheck = withValidators(CheckBox, [], { validateOn: 'onBlur', showMessagePolicy: 'all' });
   const ReqRadio = withValidators(RadioGroup, [isRequiredValidator]);
-  // const ReqShit = withValidators(ShitComp, [isRequiredValidator]);
 
   const handleOnChange = (e: any, value: any) => {
     console.log({ value });
@@ -53,7 +49,6 @@ function App() {
           <ReqRadio
             label="RadioGroup"
             name="radio-group"
-            defaultRadioOption={undefined}
             radioOptions={[
               { id: '1', label: 'option 1', value: { a: 'whatever1', b: 'hello1' } },
               { id: '2', label: 'option 2', value: { a: 'whatever2', b: 'hello2' } },

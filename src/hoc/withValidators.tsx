@@ -5,12 +5,13 @@ import {
 } from 'react';
 import { useFormContext } from '../providers/FormValidationProvider';
 import {
+  CustomComponentType,
   ValidableProps, ValidatorType,
 } from '../types/common';
 import { getLengthValidator, isRequiredValidator } from '../utils/intrinsicValidators';
 
 const withValidators = <P extends ValidableProps>(
-  WrappedComponent: ComponentType<P>,
+  WrappedComponent: CustomComponentType<P>,
   validators: ValidatorType[],
   options: {
     validateOn?: 'onBlur' | 'onChange' | 'both';
