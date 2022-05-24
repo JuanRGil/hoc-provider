@@ -10,18 +10,17 @@ import SubmitButton from './components/form-components/SubmitButton/SubmitButton
 import PhoneInput from './components/form-components/Input/PhoneInput/PhoneInput';
 import CheckBox from './components/form-components/Input/CheckBox/CheckBox';
 import Paper from './components/this-app-components/Paper/Paper';
-import { isRequiredValidator } from './utils/intrinsicValidators';
-import RadioGroup from './components/form-components/Input/RadioGroup/RadioGroup';
+import All from './components/test-components/policies/All';
+import First from './components/test-components/policies/First';
+import None from './components/test-components/policies/None';
+import Blur from './components/test-components/validate-on/Blur';
+import Change from './components/test-components/validate-on/Change';
+import Both from './components/test-components/validate-on/Both';
 
 function App() {
   const ValidateWithAllMessages = withValidators(Input, [containsA, containsB], { validateOn: 'both', showMessagePolicy: 'all' });
-  const ValidateWithoutMessages = withValidators(Input, [containsD, containsA, containsB, containsC], { validateOn: 'onBlur', showMessagePolicy: 'all' });
-  const ValidateWithFirstMessage = withValidators(Input, [containsD, containsA, containsB, containsC], { validateOn: 'onBlur', showMessagePolicy: 'first' });
-  const InputDni = withValidators(Input, [{ isValid: (value) => !value || /^[0-9]{8,8}[A-Za-z]$/.test(value), message: 'invalid dni' }]);
-  const CustomReqMessage = withValidators(Input, [{ ...isRequiredValidator, message: 'my custom required message' }]);
-  const WithPattern = withValidators(Input, []);
-  const ReqCheck = withValidators(CheckBox, [], { validateOn: 'onBlur', showMessagePolicy: 'all' });
-  const ReqRadio = withValidators(RadioGroup, [isRequiredValidator]);
+
+  const DoubleProcess = withValidators(ValidateWithAllMessages, [containsD, containsC], { validateOn: 'onBlur', showMessagePolicy: 'all' });
 
   const handleOnChange = (e: any) => {
     console.log({ value: e.target.value });
@@ -33,35 +32,17 @@ function App() {
   return (
     <div>
       <FormValidationProvider className="form-provider" contextName="form-text-inputs">
-        <Paper title="Inputs with Validator HOC">
-          <ValidateWithAllMessages label="With All Errors (*)" name="HOC-allMsgs" required minLength={4} onBlur={handleOnBlur} onChange={handleOnChange} />
-          <ValidateWithFirstMessage label="With One Error (*)" name="HOC-firstMsgs" required onBlur={handleOnBlur} onChange={handleOnChange} />
-          <ValidateWithoutMessages label="With No Errors" name="HOC-noMsgs" onBlur={handleOnBlur} onChange={handleOnChange} />
-          <InputDni label="DNI: " required name="HOC-dni" onBlur={handleOnBlur} />
-          <CustomReqMessage label="Custom Message: " name="HOC-cuistom-required" onBlur={handleOnBlur} />
-          <WithPattern label="Only number (default msg)" name="HOC-with-pattern" pattern={/^\d*$/} onBlur={handleOnBlur} />
-          <WithPattern label="Only number (custom msg)" name="HOC-with-pattern-custom-msg" pattern={/^\d*$/} patternMgs="Only numbers" onBlur={handleOnBlur} />
-        </Paper>
-        <Paper title="Inputs without Validator HOC">
-          <PhoneInput label="Telefono" name="phoneNumber" onChange={handleOnChange} />
-          <Input label="Only numbers" name="with-pattern" onBlur={handleOnBlur} />
-        </Paper>
-        <SubmitButton />
-      </FormValidationProvider>
-      <FormValidationProvider className="form-provider" contextName="form-checkbox-radio-select">
-        <Paper title="Checkboxes Radio and Select">
-          <CheckBox label="Checkbox" name="mycheck" onBlur={handleOnBlur} />
-          <ReqCheck label="Checkbox (*)" onChange={handleOnChange} required name="mycheck-req" />
-          <ReqRadio
-            label="RadioGroup"
-            name="radio-group"
-            radioOptions={[
-              { id: '1', label: 'option 1', value: { a: 'whatever1', b: 'hello1' } },
-              { id: '2', label: 'option 2', value: { a: 'whatever2', b: 'hello2' } },
-              { id: '3', label: 'option 3', value: { a: 'whatever3', b: 'hello3' } },
-            ]}
-            onChange={handleOnChange}
-          />
+        <Paper title="with Validator options">
+          <Paper title="Policies (show all errors, first error or none)">
+            <All label="All" name="hoc-all" value="ab" onChange={handleOnChange} />
+            <First label="First Message" name="hoc-first" value="ab" onChange={handleOnChange} />
+            <None label="No Messages" name="hoc-none" value="ab" onChange={handleOnChange} />
+          </Paper>
+          <Paper title="When to show errors">
+            <Blur label="show on Blur" name="hoc-blur" value="ab" onChange={handleOnChange} />
+            <Change label="show on Change" name="hoc-change" value="ab" onChange={handleOnChange} />
+            <Both label="on blur and on change" name="hoc-both" value="ab" onChange={handleOnChange} />
+          </Paper>
         </Paper>
         <SubmitButton />
       </FormValidationProvider>

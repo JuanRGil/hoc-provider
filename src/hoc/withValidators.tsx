@@ -10,13 +10,14 @@ import {
 } from '../types/common';
 import { getPatternValidator, getLengthValidator, isRequiredValidator } from '../utils/intrinsicValidators';
 
+const DEFAULT_OPTIONS = { validateOn: 'both', showMessagePolicy: 'first' };
 const withValidators = <P extends ValidableProps>(
   WrappedComponent: CustomComponentType<P>,
   validators: ValidatorType[],
-  options: {
+  options?: {
     validateOn?: 'onBlur' | 'onChange' | 'both';
     showMessagePolicy?: 'all' | 'first' | 'none';
-  } = { validateOn: 'both', showMessagePolicy: 'first' },
+  },
 ): ComponentType<P> => function WithValidator(
     props: P,
   ) {
@@ -25,7 +26,7 @@ const withValidators = <P extends ValidableProps>(
     const [nativeInputProps, setNativeInputProps] = useState({ ...props });
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [valueForValidation, setValueForValidation] = useState<unknown>('');
-
+    const finalOptions = { ...DEFAULT_OPTIONS, ...options };
     const setInputState = (isInputValid: boolean) => {
       const { name } = props;
       if (setFieldsStates) {
@@ -94,7 +95,7 @@ const withValidators = <P extends ValidableProps>(
       if (!readOnly) {
         const allValidators = intrinsicValidators.concat(validators);
         while (
-          (options.showMessagePolicy === 'all' || isInputValid)
+          (finalOptions.showMessagePolicy === 'all' || isInputValid)
         && i < allValidators.length
         ) {
           if (!allValidators[i].isValid(value)) {
@@ -116,7 +117,7 @@ const withValidators = <P extends ValidableProps>(
     }, [submitTries]);
 
     const genericHandle = (eventFunction: 'onBlur' | 'onChange', e: FocusEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>) => {
-      if (options.validateOn === 'both' || options.validateOn === eventFunction) {
+      if (finalOptions.validateOn === 'both' || finalOptions.validateOn === eventFunction) {
         if (e.target.type !== 'checkbox') {
           validate(e.target.value);
         } else {
@@ -153,7 +154,7 @@ const withValidators = <P extends ValidableProps>(
         onBlur={
         (e: FocusEvent<HTMLInputElement>) => handleOnBlur(e)
       }
-        showError={options.showMessagePolicy !== 'none'}
+        showError={finalOptions.showMessagePolicy !== 'none'}
         errorMessages={errorMessages}
       />
     );
