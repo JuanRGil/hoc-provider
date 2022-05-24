@@ -6,7 +6,7 @@ import {
 import { ValidableProps } from '../../../types/common';
 
 function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange' | 'pattern'>): any {
-  const [value, setValue] = useState<string | number | readonly string[] | undefined>(props.value || '');
+  const [value, setValue] = useState<string | number | readonly string[] | undefined>(props.defaultValue || props.value || '');
   const {
     showError,
     errorMessages,

@@ -3,12 +3,12 @@ import { ValidableProps } from '../../../types/common';
 import { containsA, containsB } from '../../../utils/validators';
 import Input from '../../form-components/Input/Input';
 
-function None(props: ValidableProps & {value?: string}) : any {
+function None(props: ValidableProps & {defaultValue?: string}) : any {
   return (
     <Input {...props} />
   );
 }
 None.defaultProps = {
-  value: '',
+  defaultValue: undefined,
 };
 export default withValidators(None, [containsA, containsB], { showMessagePolicy: 'none' });

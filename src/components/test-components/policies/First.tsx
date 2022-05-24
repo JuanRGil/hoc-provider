@@ -3,12 +3,12 @@ import { ValidableProps } from '../../../types/common';
 import { containsA, containsB } from '../../../utils/validators';
 import Input from '../../form-components/Input/Input';
 
-function First(props: ValidableProps & {value?: string}) : any {
+function First(props: ValidableProps & {defaultValue?: string}) : any {
   return (
     <Input {...props} />
   );
 }
 First.defaultProps = {
-  value: '',
+  defaultValue: undefined,
 };
 export default withValidators(First, [containsA, containsB], { showMessagePolicy: 'first' });

@@ -11,11 +11,14 @@ declare interface PropsForValidation {
     errorMessages?: string[];
     showError?: boolean;
     withValidator?: boolean;
-    maxLength?: number;
-    minLength?: number;
     required?: boolean;
     pattern?: RegExp;
     patternMgs?: string;
+    maxLength?: number;
+    minLength?: number;
+    value?: string | number | readonly string[] | undefined;
+    defaultValue?: string | number | readonly string[] | undefined;
+    checked?: boolean;
     readOnly?: boolean
 }
 declare interface WithOnBlurRequired {

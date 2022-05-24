@@ -25,7 +25,7 @@ const withValidators = <P extends ValidableProps>(
     const [intrinsicValidators, setIntrinsicValidators] = useState<ValidatorType[]>([]);
     const [nativeInputProps, setNativeInputProps] = useState({ ...props });
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
-    const [valueForValidation, setValueForValidation] = useState<unknown>('');
+    const [valueForValidation, setValueForValidation] = useState<unknown>(props.value || props.defaultValue || props.checked || '');
     const finalOptions = { ...DEFAULT_OPTIONS, ...options };
     const setInputState = (isInputValid: boolean) => {
       const { name } = props;
