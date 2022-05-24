@@ -43,24 +43,24 @@ function App() {
             <Change label="show on Change" name="hoc-change" defaultValue="ab" onChange={handleOnChange} />
             <Both label="on blur and on change" name="hoc-both" defaultValue="ab" onChange={handleOnChange} />
           </Paper>
-        </Paper>
-        <Paper title="Checkbox & RadioGroup">
-          <CheckboxWithValidators
-            label="Checkbox 1"
-            name="hoc-checkbox"
-            checked
-            onChange={handleOnChange}
-          />
-          <RadioGroupWithValidators
-            label="Radio Group"
-            name="hoc-radio"
-            onChange={handleOnChange}
-            radioOptions={[
-              { id: '1', label: 'option 1', value: { a: 'a' } },
-              { id: '2', label: 'option 2', value: { a: 'b' } },
-              { id: '3', label: 'option 3', value: { a: 'c' } },
-            ]}
-          />
+          <Paper title="Checkbox & RadioGroup">
+            <CheckboxWithValidators
+              label="Checkbox 1"
+              name="hoc-checkbox"
+              checked
+              onChange={handleOnChange}
+            />
+            <RadioGroupWithValidators
+              label="Radio Group"
+              name="hoc-radio"
+              onChange={handleOnChange}
+              radioOptions={[
+                { id: '1', label: 'option 1', value: { a: 'a' } },
+                { id: '2', label: 'option 2', value: { a: 'b' } },
+                { id: '3', label: 'option 3', value: { a: 'c' } },
+              ]}
+            />
+          </Paper>
         </Paper>
         <SubmitButton />
       </FormValidationProvider>

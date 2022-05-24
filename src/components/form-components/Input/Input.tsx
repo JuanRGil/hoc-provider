@@ -6,7 +6,6 @@ import {
 import { ValidableProps } from '../../../types/common';
 
 function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange' | 'pattern'>): any {
-  const [value, setValue] = useState<string | number | readonly string[] | undefined>(props.defaultValue || props.value || '');
   const {
     showError,
     errorMessages,
@@ -17,8 +16,11 @@ function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement
     required,
     pattern,
     patternMgs,
+    defaultValue,
+    value,
     ...rest
   } = props;
+  const [valueControlled, setValueControlled] = useState<string | number | readonly string[] | undefined>(defaultValue || value || '');
 
   useEffect(() => {
     if (!withValidator && (maxLength
@@ -31,7 +33,7 @@ function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement
     }
   }, []);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+    setValueControlled(e.target.value);
     if (props.onChange) {
       props.onChange(e);
     }
@@ -46,13 +48,13 @@ function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement
     <div className={`input-container -${rest.type}`}>
       <div className={`input-info -${rest.type}`}>
         <input
-          value={value}
+          value={valueControlled}
           {...rest}
           id={rest.name}
           onChange={handleChange}
           onBlur={handleBlur}
         />
-        <label htmlFor={rest.name} className={`${rest.type} ${value ? 'not-empty' : ''}`.trim()}>
+        <label htmlFor={rest.name} className={`${rest.type} ${valueControlled ? 'not-empty' : ''}`.trim()}>
           {label}
         </label>
       </div>
