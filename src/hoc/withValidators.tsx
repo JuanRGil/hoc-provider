@@ -6,12 +6,13 @@ import {
 import { useFormContext } from '../providers/FormValidationProvider';
 import {
   CustomComponentType,
-  ValidableProps, ValidatorType,
+  ExtendedValidableProps,
+  ValidatorType,
 } from '../types/common';
 import { getPatternValidator, getLengthValidator, isRequiredValidator } from '../utils/intrinsicValidators';
 
 const DEFAULT_OPTIONS = { validateOn: 'both', showMessagePolicy: 'first' };
-const withValidators = <P extends ValidableProps>(
+const withValidators = <P extends ExtendedValidableProps>(
   WrappedComponent: CustomComponentType<P>,
   validators: ValidatorType[],
   options?: {

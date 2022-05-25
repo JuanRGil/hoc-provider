@@ -1,31 +1,28 @@
 import {
-  ChangeEvent, ComponentClass, FocusEvent, FunctionComponent,
+  ChangeEvent, ComponentClass, FocusEvent, FunctionComponent, InputHTMLAttributes,
 } from 'react';
 
 export type OnChangeFunction = (e: ChangeEvent<HTMLInputElement>)=> void
 export type OnBlurFunction = (e: FocusEvent<HTMLInputElement>)=> void
 
-declare interface PropsForValidation {
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange' | 'pattern'> {
+    pattern?: RegExp;
+    patternMgs?: string;
+}
+interface PropsForValidation {
     name: string; // required
     label: string;
     errorMessages?: string[];
     showError?: boolean;
     withValidator?: boolean;
     required?: boolean;
-    pattern?: RegExp;
-    patternMgs?: string;
-    maxLength?: number;
-    minLength?: number;
-    value?: string | number | readonly string[] | undefined;
-    defaultValue?: string | number | readonly string[] | undefined;
-    checked?: boolean;
     readOnly?: boolean
 }
-declare interface WithOnBlurRequired {
+interface WithOnBlurRequired {
     onBlur: OnBlurFunction;
     onChange?: OnChangeFunction;
 }
-declare interface WithOnChangeRequired{
+interface WithOnChangeRequired{
     onBlur?: OnBlurFunction;
     onChange: OnChangeFunction;
 }
@@ -38,6 +35,9 @@ interface FunctionComponentWithAnyPropTypes<P> extends FunctionComponent<P>{
 }
 export type CustomComponentType<P> = ComponentClassWithAnyPropTypes<P>
 | FunctionComponentWithAnyPropTypes<P>;
-export type ValidableProps = (WithOnBlurRequired | WithOnChangeRequired) & PropsForValidation;
 
+export type ValidableProps = (
+    WithOnBlurRequired | WithOnChangeRequired
+    ) & PropsForValidation;
+export type ExtendedValidableProps = ValidableProps & {[key: string]: any| undefined};
 export type ValidatorType = {isValid: (value: any) => boolean, message: string};

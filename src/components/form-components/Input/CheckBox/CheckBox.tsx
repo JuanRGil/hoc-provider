@@ -1,8 +1,8 @@
-import { InputHTMLAttributes, useState } from 'react';
-import { ValidableProps } from '../../../../types/common';
+import { useState } from 'react';
+import { InputProps, ValidableProps } from '../../../../types/common';
 import Input from '../Input';
 
-function CheckBox(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange'>) : any {
+function CheckBox(props: ValidableProps & InputProps) : any {
   const [checkedValue, setCheckedValue] = useState<boolean>(props.checked || false);
   const handleOnBlur = (e: any) => {
     if (props.onBlur) {

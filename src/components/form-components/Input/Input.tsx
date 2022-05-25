@@ -1,11 +1,11 @@
 import {
   useEffect,
-  ChangeEvent, FocusEvent, InputHTMLAttributes, useRef, useState,
+  ChangeEvent, FocusEvent, useState,
 } from 'react';
 
-import { ValidableProps } from '../../../types/common';
+import { InputProps, ValidableProps } from '../../../types/common';
 
-function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange' | 'pattern'>): any {
+function Input(props: ValidableProps & InputProps): any {
   const {
     showError,
     errorMessages,
@@ -74,6 +74,7 @@ function Input(props: ValidableProps & Omit<InputHTMLAttributes<HTMLInputElement
 }
 
 Input.defaultProps = {
-  type: 'text',
+  pattern: undefined,
+  patternMgs: '',
 };
 export default Input;
