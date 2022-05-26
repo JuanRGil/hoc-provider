@@ -8,6 +8,8 @@ export type OnBlurFunction = (e: FocusEvent<HTMLInputElement>)=> void
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange' | 'pattern'> {
     pattern?: RegExp;
     patternMgs?: string;
+    showInfoMessage?: boolean;
+    infoMessages?: string[];
 }
 interface PropsForValidation {
     name: string; // required

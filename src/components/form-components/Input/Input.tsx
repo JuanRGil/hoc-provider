@@ -7,6 +7,8 @@ import { InputProps, ValidableProps } from '../../../types/common';
 
 function Input(props: ValidableProps & InputProps): any {
   const {
+    infoMessages,
+    showInfoMessage,
     showError,
     errorMessages,
     label,
@@ -46,7 +48,7 @@ function Input(props: ValidableProps & InputProps): any {
 
   return (
     <div className={`input-container -${rest.type}`}>
-      <div className={`input-info -${rest.type}`}>
+      <div className={`input-content -${rest.type}`}>
         <input
           value={valueControlled}
           {...rest}
@@ -57,6 +59,16 @@ function Input(props: ValidableProps & InputProps): any {
         <label htmlFor={rest.name} className={`${rest.type} ${valueControlled ? 'not-empty' : ''}`.trim()}>
           {label}
         </label>
+      </div>
+      <div className="input-info">
+        {showInfoMessage && infoMessages && (
+        <ul>
+          {infoMessages?.map((info) => (
+            <li key={info}>{info}</li>
+          ))}
+        </ul>
+        )}
+
       </div>
       <div className="input-error">
         {showError && errorMessages && (

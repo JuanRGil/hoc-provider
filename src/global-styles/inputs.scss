@@ -4,19 +4,19 @@ $border-botton-width: 1px;
 $label-font-size: 14px;
 $label-margin: 6px;
 $label-height: 20px;
-$input-info-height: $input-height + $label-height + $label-margin + $border-botton-width;
+$input-content-height: $input-height + $label-height + $label-margin + $border-botton-width;
 $input-error-height: 16px;
 
 .input-container{
-    min-height: $input-info-height+$input-error-height;
+    min-height: $input-content-height+$input-error-height;
     &.-checkbox, &.-radio{
         min-height: $input-height + $input-error-height;
     }
-    .input-info {
+    .input-content {
         display: flex;
         flex-direction: column-reverse;
         max-width: 250px;
-        height: $input-info-height;
+        height: $input-content-height;
         &.-checkbox, &.-radio{
             flex-direction: row;
             height:auto;
@@ -56,15 +56,29 @@ $input-error-height: 16px;
         }
 
     }
-    .input-error{
-        ul{
-            margin: 0px;
-            padding: 0px;
-            li{
-                list-style:none;
-                font-size: 12px;
-                padding-left: 5px;
-                color: $red;
+    .input{
+        &-error {
+            ul{
+                margin: 0px;
+                padding: 0px;
+                li{
+                    list-style:none;
+                    font-size: 12px;
+                    padding-left: 5px;
+                    color: $red;
+                }
+            }
+        }
+        &-info {
+            ul{
+                margin: 0px;
+                padding: 0px;
+                li{
+                    list-style:none;
+                    font-size: 12px;
+                    padding-left: 5px;
+                    color: $blue;
+                }
             }
         }
     }

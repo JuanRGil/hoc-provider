@@ -39,6 +39,9 @@ function App() {
             <First label="First Message" name="hoc-first" defaultValue="ab" onChange={handleOnChange} />
             <None label="No Messages" name="hoc-none" defaultValue="ab" onChange={handleOnChange} />
           </Paper>
+          <Paper title="INFO">
+            <WithoutValidators label="Info" name="hoc-info-required" showInfoMessage infoMessages={['This is required', 'second message']} required onChange={handleOnChange} />
+          </Paper>
           <Paper title="When to show errors">
             <Blur label="show on Blur" name="hoc-blur" defaultValue="ab" onChange={handleOnChange} />
             <Change label="show on Change" name="hoc-change" defaultValue="ab" onChange={handleOnChange} />
