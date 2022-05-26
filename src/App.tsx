@@ -18,9 +18,12 @@ import CheckboxWithValidators from './components/test-components/with-default-va
 import RadioGroupWithValidators from './components/test-components/with-default-validation/RadioGroupWithValidators';
 
 function App() {
-  const ValidateWithAllMessages = withValidators(Input, [containsA, containsB], { validateOn: 'both', showMessagePolicy: 'all' });
-
-  const DoubleProcess = withValidators(ValidateWithAllMessages, [containsD, containsC], { validateOn: 'onBlur', showMessagePolicy: 'all' });
+  const InputValidABCD = withValidators(withValidators(Input, [
+    containsA,
+    containsB,
+  ]), [
+    containsC,
+    containsD]);
 
   const handleOnChange = (e: any) => {
     console.log({ value: e.target.value });
@@ -59,6 +62,14 @@ function App() {
                 { id: '2', label: 'option 2', value: { a: 'b' } },
                 { id: '3', label: 'option 3', value: { a: 'c' } },
               ]}
+            />
+          </Paper>
+          <Paper title="Known issues: ">
+            <InputValidABCD
+              label="withValidator used twice on component doesnt work as expected"
+              name="hoc-checkbox"
+              onChange={handleOnChange}
+              required
             />
           </Paper>
         </Paper>

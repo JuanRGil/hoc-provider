@@ -9,7 +9,7 @@ import {
   ExtendedValidableProps,
   ValidatorType,
 } from '../types/common';
-import { getPatternValidator, getLengthValidator, isRequiredValidator } from '../utils/intrinsicValidators';
+import { getAllValidators } from './utils';
 
 const DEFAULT_OPTIONS = { validateOn: 'both', showMessagePolicy: 'first' };
 const withValidators = <P extends ExtendedValidableProps>(
@@ -23,11 +23,12 @@ const withValidators = <P extends ExtendedValidableProps>(
     props: P,
   ) {
     const { setFieldsStates, submitTries } = useFormContext();
-    const [intrinsicValidators, setIntrinsicValidators] = useState<ValidatorType[]>([]);
     const [nativeInputProps, setNativeInputProps] = useState({ ...props });
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
+
     const [valueForValidation, setValueForValidation] = useState<unknown>(props.value || props.defaultValue || props.checked || '');
     const finalOptions = { ...DEFAULT_OPTIONS, ...options };
+    const [allValidators] = useState(getAllValidators(validators, props, setNativeInputProps));
     const setInputState = (isInputValid: boolean) => {
       const { name } = props;
       if (setFieldsStates) {
@@ -41,49 +42,9 @@ const withValidators = <P extends ExtendedValidableProps>(
     };
 
     // TODO: generateValidatorsFromProps
-    const generateValidatorsFromProps = (): ValidatorType[] => {
-      const {
-        maxLength, minLength, required, pattern, patternMgs,
-      } = props;
-      const newValidators: ValidatorType[] = [];
-      /**
-       * LENGTH VALIDATORS
-       */
-      if (minLength || maxLength) {
-        const lengthValidator = getLengthValidator(minLength, maxLength);
-        if (lengthValidator) {
-          newValidators.push(lengthValidator);
-        }
-        setNativeInputProps(
-          (prevInputProps) => ({
-            ...prevInputProps,
-            minLength: undefined,
-            maxLength: undefined,
-          }),
-        );
-      }
-      /**
-       * REQUIRED VALIDATOR
-       */
-      if (required) {
-        newValidators.push(isRequiredValidator);
-        setNativeInputProps((prevInputProps) => ({ ...prevInputProps, required: undefined }));
-      }
-
-      /**
-       * PATTERN VALIDATOR
-       */
-      if (pattern) {
-        newValidators.push(getPatternValidator(pattern, patternMgs));
-        setNativeInputProps((prevInputProps) => ({ ...prevInputProps, required: undefined }));
-      }
-
-      return newValidators;
-    };
 
     useEffect(() => {
       setInputState(false);
-      setIntrinsicValidators(generateValidatorsFromProps());
       console.log('display name: ', WrappedComponent.name);
       console.log('valueForValidation: ', valueForValidation);
     }, []);
@@ -94,7 +55,6 @@ const withValidators = <P extends ExtendedValidableProps>(
       const newErrorMessages: string[] = [];
       let i = 0;
       if (!readOnly) {
-        const allValidators = intrinsicValidators.concat(validators);
         while (
           (finalOptions.showMessagePolicy === 'all' || isInputValid)
         && i < allValidators.length
@@ -137,6 +97,7 @@ const withValidators = <P extends ExtendedValidableProps>(
     };
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+      console.log(`${WrappedComponent.name} has changed`);
       if (e.target.type !== 'checkbox') {
         setValueForValidation(e.target.value);
       } else {
@@ -149,6 +110,7 @@ const withValidators = <P extends ExtendedValidableProps>(
       <WrappedComponent
         {...nativeInputProps as any}
         withValidator
+        validators={allValidators}
         onChange={
         (e: ChangeEvent<HTMLInputElement>) => handleOnChange(e)
       }

@@ -5,6 +5,7 @@ import {
 export type OnChangeFunction = (e: ChangeEvent<HTMLInputElement>)=> void
 export type OnBlurFunction = (e: FocusEvent<HTMLInputElement>)=> void
 
+export type ValidatorType = {isValid: (value: any) => boolean, message: string};
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange' | 'pattern'> {
     pattern?: RegExp;
     patternMgs?: string;
@@ -15,6 +16,7 @@ interface PropsForValidation {
     errorMessages?: string[];
     showError?: boolean;
     withValidator?: boolean;
+    validators?: ValidatorType[];
     required?: boolean;
     readOnly?: boolean
 }
@@ -40,4 +42,3 @@ export type ValidableProps = (
     WithOnBlurRequired | WithOnChangeRequired
     ) & PropsForValidation;
 export type ExtendedValidableProps = ValidableProps & {[key: string]: any| undefined};
-export type ValidatorType = {isValid: (value: any) => boolean, message: string};
