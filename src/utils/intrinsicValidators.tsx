@@ -42,7 +42,8 @@ export const getLengthValidator = (
     // ts does not detect it is impossible that minLength !== undefined at this point
     // @ts-ignore
     return getExactLengthValidator(minLength);
-  } if (minLength && maxLength) {
+  }
+  if (minLength && maxLength) {
     return getBothLengthValidator(minLength, maxLength);
   }
   if (minLength) {

@@ -16,6 +16,7 @@ import Change from './components/test-components/validate-on/Change';
 import Both from './components/test-components/validate-on/Both';
 import CheckboxWithValidators from './components/test-components/with-default-validation/CheckboxWithValidators';
 import RadioGroupWithValidators from './components/test-components/with-default-validation/RadioGroupWithValidators';
+import WithoutValidators from './components/test-components/WithoutValidators';
 
 function App() {
   const ValidateWithAllMessages = withValidators(Input, [containsA, containsB], { validateOn: 'both', showMessagePolicy: 'all' });
@@ -42,6 +43,14 @@ function App() {
             <Blur label="show on Blur" name="hoc-blur" defaultValue="ab" onChange={handleOnChange} />
             <Change label="show on Change" name="hoc-change" defaultValue="ab" onChange={handleOnChange} />
             <Both label="on blur and on change" name="hoc-both" defaultValue="ab" onChange={handleOnChange} />
+          </Paper>
+          <Paper title="Attribute validators">
+            <WithoutValidators label="required" name="hoc-required" required onChange={handleOnChange} />
+            <WithoutValidators label="Max length" name="hoc-max" maxLength={1} defaultValue="ab" onChange={handleOnChange} />
+            <WithoutValidators label="Min length" name="hoc-min" minLength={2} defaultValue="a" onChange={handleOnChange} />
+            <WithoutValidators label="Min length & MaxLength" name="hoc-min-max" minLength={2} maxLength={4} defaultValue="a" onChange={handleOnChange} />
+            <WithoutValidators label="Exact length" name="hoc-exact" minLength={1} maxLength={1} defaultValue="ab" onChange={handleOnChange} />
+            <WithoutValidators label="Pattern (phone)" name="hoc-pattern" defaultValue="ab" pattern={/^\+?(6\d{2}|7[1-9]\d{1})\d{6}$/} onChange={handleOnChange} />
           </Paper>
           <Paper title="Checkbox & RadioGroup">
             <CheckboxWithValidators
