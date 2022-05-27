@@ -1,11 +1,9 @@
 import './App.scss';
 import './global-styles/inputs.scss';
+import { useMemo, useRef, useState } from 'react';
 import withValidators from './hoc/withValidators';
 import Input from './components/form-components/Input/Input';
 import { FormValidationProvider } from './providers/FormValidationProvider';
-import {
-  containsA, containsB, containsC, containsD,
-} from './utils/validators';
 import SubmitButton from './components/form-components/SubmitButton/SubmitButton';
 import Paper from './components/this-app-components/Paper/Paper';
 import All from './components/test-components/policies/All';
@@ -19,12 +17,15 @@ import RadioGroupWithValidators from './components/test-components/with-default-
 import WithoutValidators from './components/test-components/WithoutValidators';
 
 function App() {
-  const ValidateWithAllMessages = withValidators(Input, [containsA, containsB], { validateOn: 'both', showMessagePolicy: 'all' });
-
-  const DoubleProcess = withValidators(ValidateWithAllMessages, [containsD, containsC], { validateOn: 'onBlur', showMessagePolicy: 'all' });
+  const [inputValue, setInputValue] = useState<string>('');
+  const [dependantInput, setDependantInput] = useState<string>('');
+  const DependantInput = useMemo(() => withValidators(Input, [{ isValid: (value) => value !== inputValue, message: 'el valor debe ser distinto del valor de Input A ' }], { validateOn: 'both', showMessagePolicy: 'all' }), [inputValue]);
 
   const handleOnChange = (e: any) => {
     console.log({ value: e.target.value });
+  };
+  const handleDependantOnChange = (e: any) => {
+    setDependantInput(e.target.value);
   };
   const handleOnBlur = (e: any) => {
     console.log({ value: e.target.value });
@@ -46,6 +47,10 @@ function App() {
             <Blur label="show on Blur" name="hoc-blur" defaultValue="ab" onChange={handleOnChange} />
             <Change label="show on Change" name="hoc-change" defaultValue="ab" onChange={handleOnChange} />
             <Both label="on blur and on change" name="hoc-both" defaultValue="ab" onChange={handleOnChange} />
+          </Paper>
+          <Paper title="Validation depends on other input value">
+            <Input label="Input A" name="plain-input" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+            <DependantInput label="Input dependiente de A" name="input-dependiente" value={dependantInput} onChange={handleDependantOnChange} />
           </Paper>
           <Paper title="Attribute validators">
             <WithoutValidators label="required" name="hoc-required" required onChange={handleOnChange} />
