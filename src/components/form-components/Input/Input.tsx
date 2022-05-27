@@ -56,7 +56,7 @@ function Input(props: ValidableProps & InputProps): any {
           onChange={handleChange}
           onBlur={handleBlur}
         />
-        <label htmlFor={rest.name} className={`${rest.type} ${valueControlled ? 'not-empty' : ''}`.trim()}>
+        <label htmlFor={rest.name} className={`${rest.type} ${rest.placeholder || valueControlled ? 'not-empty' : ''}`.trim()}>
           {label}
         </label>
       </div>

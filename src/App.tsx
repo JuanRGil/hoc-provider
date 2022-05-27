@@ -36,7 +36,7 @@ function App() {
       <FormValidationProvider className="form-provider" contextName="form-text-inputs">
         <Paper title="with Validator options">
           <Paper title="Policies (show all errors, first error or none)">
-            <All label="All" name="hoc-all" defaultValue="ab" onChange={handleOnChange} />
+            <All label="All" name="hoc-all" placeholder="All" onChange={handleOnChange} />
             <First label="First Message" name="hoc-first" defaultValue="ab" onChange={handleOnChange} />
             <None label="No Messages" name="hoc-none" defaultValue="ab" onChange={handleOnChange} />
           </Paper>
