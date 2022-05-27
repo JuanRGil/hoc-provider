@@ -88,5 +88,6 @@ function Input(props: ValidableProps & InputProps): any {
 Input.defaultProps = {
   pattern: undefined,
   patternMgs: '',
+  type: 'text',
 };
 export default Input;

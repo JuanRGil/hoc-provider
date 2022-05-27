@@ -17,8 +17,8 @@ import RadioGroupWithValidators from './components/test-components/with-default-
 import WithoutValidators from './components/test-components/WithoutValidators';
 
 function App() {
-  const [inputValue, setInputValue] = useState<string>('');
-  const [dependantInput, setDependantInput] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>('abc');
+  const [dependantInput, setDependantInput] = useState<string>('abc');
   const DependantInput = useMemo(() => withValidators(Input, [{ isValid: (value) => value !== inputValue, message: 'el valor debe ser distinto del valor de Input A ' }], { validateOn: 'both', showMessagePolicy: 'all' }), [inputValue]);
 
   const handleOnChange = (e: any) => {
@@ -64,12 +64,14 @@ function App() {
             <CheckboxWithValidators
               label="Checkbox 1"
               name="hoc-checkbox"
+              required
               checked
               onChange={handleOnChange}
             />
             <RadioGroupWithValidators
               label="Radio Group"
               name="hoc-radio"
+              required
               onChange={handleOnChange}
               radioOptions={[
                 { id: '1', label: 'option 1', value: { a: 'a' } },
