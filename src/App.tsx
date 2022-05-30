@@ -1,9 +1,9 @@
 import './App.scss';
 import './global-styles/inputs.scss';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import withValidators from './hoc/withValidators';
 import Input from './components/form-components/Input/Input';
-import { FormValidationProvider } from './providers/FormValidationProvider';
+import FormValidationProvider from './providers/FormValidationProvider';
 import SubmitButton from './components/form-components/SubmitButton/SubmitButton';
 import Paper from './components/this-app-components/Paper/Paper';
 import All from './components/test-components/policies/All';
@@ -15,20 +15,35 @@ import Both from './components/test-components/validate-on/Both';
 import CheckboxWithValidators from './components/test-components/with-default-validation/CheckboxWithValidators';
 import RadioGroupWithValidators from './components/test-components/with-default-validation/RadioGroupWithValidators';
 import WithoutValidators from './components/test-components/WithoutValidators';
+import Select from './components/form-components/Input/Select/Select';
+import SelectWithValidators from './components/test-components/with-default-validation/SelectWithValidators';
+import ProvinceSelectWithValidators from './components/test-components/with-default-validation/ProvinceSelectWithValidators';
+import SearchAddressBlock from './components/form-components/Input/Address/SearchAddressBlock/SearchAddressBlock';
 
 function App() {
   const [inputValue, setInputValue] = useState<string>('abc');
+  const [addresses, setAddresses] = useState<string[] | undefined>();
   const [dependantInput, setDependantInput] = useState<string>('abc');
   const DependantInput = useMemo(() => withValidators(Input, [{ isValid: (value) => value !== inputValue, message: 'el valor debe ser distinto del valor de Input A ' }], { validateOn: 'both', showMessagePolicy: 'all' }), [inputValue]);
 
   const handleOnChange = (e: any) => {
     console.log({ value: e.target.value });
   };
+
   const handleDependantOnChange = (e: any) => {
     setDependantInput(e.target.value);
   };
+
   const handleOnBlur = (e: any) => {
     console.log({ value: e.target.value });
+  };
+
+  const onTrySubmit = () => {
+    console.log('If we get here form is ok');
+  };
+
+  const onAddressSubmit = (e: any) => {
+    console.log({ addressData: e });
   };
 
   return (
@@ -60,7 +75,7 @@ function App() {
             <WithoutValidators label="Exact length" name="hoc-exact" minLength={1} maxLength={1} defaultValue="ab" onChange={handleOnChange} />
             <WithoutValidators label="Pattern (phone)" name="hoc-pattern" defaultValue="ab" pattern={/^\+?(6\d{2}|7[1-9]\d{1})\d{6}$/} onChange={handleOnChange} />
           </Paper>
-          <Paper title="Checkbox & RadioGroup">
+          <Paper title="Checkbox & RadioGroup & select">
             <CheckboxWithValidators
               label="Checkbox 1"
               name="hoc-checkbox"
@@ -79,9 +94,26 @@ function App() {
                 { id: '3', label: 'option 3', value: { a: 'c' } },
               ]}
             />
+            <SelectWithValidators
+              label="Select"
+              name="hoc-select"
+              required
+              onChange={handleOnChange}
+              selectOptions={[
+                { id: '1', label: 'option 1', value: { a: 'a' } },
+                { id: '2', label: 'option 2', value: { a: 'b' } },
+                { id: '3', label: 'option 3', value: { a: 'c' } },
+              ]}
+            />
+            <ProvinceSelectWithValidators
+              name="hoc-province-select"
+              required
+              onChange={handleOnChange}
+            />
           </Paper>
         </Paper>
-        <SubmitButton />
+        <SearchAddressBlock name="hoc-address-block" onChange={handleOnChange} checkAddressResult={addresses} onCheckAddress={() => setAddresses(['blabla'])} />
+        <SubmitButton onSubmit={onTrySubmit} />
       </FormValidationProvider>
     </div>
   );

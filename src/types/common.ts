@@ -1,19 +1,11 @@
 import {
-  ChangeEvent, ComponentClass, FocusEvent, FunctionComponent, InputHTMLAttributes,
+  ChangeEvent, ComponentClass, FocusEvent, FunctionComponent,
 } from 'react';
 
 export type OnChangeFunction = (e: ChangeEvent<HTMLInputElement>)=> void
 export type OnBlurFunction = (e: FocusEvent<HTMLInputElement>)=> void
-
-export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' |'onChange' | 'pattern'> {
-    pattern?: RegExp;
-    patternMgs?: string;
-    showInfoMessage?: boolean;
-    infoMessages?: string[];
-}
 interface PropsForValidation {
     name: string; // required
-    label: string;
     errorMessages?: string[];
     showError?: boolean;
     withValidator?: boolean;

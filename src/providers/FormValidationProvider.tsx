@@ -46,11 +46,11 @@ export const FormContext = createContext({} as ReturnType<typeof useFormContextV
 
 export const useFormContext = () => useContext(FormContext);
 
-export function FormValidationProvider(props:
+function FormValidationProvider(props:
   {
     children: any;
     contextName: string,
-    className: string,
+    className?: string,
   }) {
   const { children, contextName, className } = props;
   return (
@@ -61,3 +61,7 @@ export function FormValidationProvider(props:
     </FormContext.Provider>
   );
 }
+FormValidationProvider.defaultProps = {
+  className: '',
+};
+export default FormValidationProvider;

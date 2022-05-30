@@ -3,16 +3,16 @@ import './radio-group.scss';
 import { useState } from 'react';
 import { ValidableProps } from '../../../../types/common';
 import RadioElement from './RadioElement';
-import RadioOption from './types/RadioOption';
+import { Option } from '../types';
 
 function RadioGroup(
   props : ValidableProps
-    & {defaultRadioOption?: RadioOption, radioOptions : RadioOption[]},
+    & {label: string, defaultRadioOption?: Option, radioOptions : Option[]},
 ) : any {
   const [
     selectedOption,
     setSelectedOption,
-  ] = useState<RadioOption | undefined>(props.defaultRadioOption);
+  ] = useState<Option | undefined>(props.defaultRadioOption);
   const handleOnBlur = (e: any) => {
     if (props.onBlur) {
       props.onBlur(e);

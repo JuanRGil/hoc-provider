@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { InputProps, ValidableProps } from '../../../../types/common';
+import { ValidableProps } from '../../../../types/common';
 import Input from '../Input';
+import { InputProps } from '../types';
 
 function CheckBox(props: ValidableProps & InputProps) : any {
   const [checkedValue, setCheckedValue] = useState<boolean>(props.checked || false);

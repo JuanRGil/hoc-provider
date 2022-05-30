@@ -3,13 +3,8 @@ import { ValidableProps } from '../../../../types/common';
 import Input from '../Input';
 
 function RadioElement(props: ValidableProps) : any {
-  const handleOnBlur = (e: any) => {
-    if (props.onBlur) {
-      props.onBlur(e);
-    }
-  };
   return (
-    <Input {...props} type="radio" onBlur={handleOnBlur} />
+    <Input {...props} type="radio" />
   );
 }
 RadioElement.propTypes = {

@@ -1,9 +1,11 @@
+import { string } from 'prop-types';
 import {
   useEffect,
   ChangeEvent, FocusEvent, useState,
 } from 'react';
 
-import { InputProps, ValidableProps } from '../../../types/common';
+import { ValidableProps } from '../../../types/common';
+import { InputProps } from './types';
 
 function Input(props: ValidableProps & InputProps): any {
   const {
@@ -56,9 +58,11 @@ function Input(props: ValidableProps & InputProps): any {
           onChange={handleChange}
           onBlur={handleBlur}
         />
+        {label && (
         <label htmlFor={rest.name} className={`${rest.type} ${rest.placeholder || valueControlled ? 'not-empty' : ''}`.trim()}>
           {label}
         </label>
+        )}
       </div>
       <div className="input-info">
         {showInfoMessage && infoMessages && (
@@ -89,5 +93,6 @@ Input.defaultProps = {
   pattern: undefined,
   patternMgs: '',
   type: 'text',
+  label: undefined,
 };
 export default Input;

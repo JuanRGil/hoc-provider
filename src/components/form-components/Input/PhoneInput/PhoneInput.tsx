@@ -1,5 +1,6 @@
-import { InputProps, ValidableProps } from '../../../../types/common';
+import { ValidableProps } from '../../../../types/common';
 import Input from '../Input';
+import { InputProps } from '../types';
 
 function PhoneInput(props: ValidableProps & InputProps) : any {
   const handleOnBlur = (e: any) => {
